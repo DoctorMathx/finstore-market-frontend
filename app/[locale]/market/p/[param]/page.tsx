@@ -32,11 +32,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { param, locale } = await params;
   const product = productByRouteParam(param);
   if (!product) return {};
+  const description = `${product.title} from ${product.merchant.name}, ${product.merchant.originCity}. Delivery date shown before you pay. The store is paid only after you confirm delivery.`;
   return {
     title: `${product.title} — buy online in Nigeria | Finstore Market`,
-    description: `${product.title} from ${product.merchant.name}, ${product.merchant.originCity}. Delivery date shown before you pay. The store is paid only after you confirm delivery.`,
+    description,
     // Canonical to itself regardless of which category path the buyer arrived from.
     alternates: { canonical: `/${locale}${productHref(product)}` },
+    openGraph: {
+      title: product.title,
+      description,
+      type: "website",
+      url: `/${locale}${productHref(product)}`,
+    },
+    twitter: { card: "summary_large_image", title: product.title, description },
   };
 }
 

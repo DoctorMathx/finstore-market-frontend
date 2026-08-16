@@ -128,6 +128,14 @@ addresses, recent searches) runs through one `useSyncExternalStore` layer in
 writes propagate via the `storage` event, and `npm run lint` is zero-warning
 with `react-hooks/set-state-in-effect` at its default error level.
 
+Sharing is first-class: every route serves a branded 1200×630 OG banner
+(`app/[locale]/opengraph-image.tsx`), and every product page overrides it with
+a generated card — title, naira price, struck original price, merchant and
+origin — rendered by `lib/og.tsx` from local TTFs that carry U+20A6, so the
+price never shares as a tofu box. The buy box's Share menu covers WhatsApp, X,
+Facebook and Telegram, plus copy-link and the native share sheet for
+everything else.
+
 Sticky offsets never guess: the header measures itself with a ResizeObserver
 and publishes `--header-h`, which the mobile filter bar, PDP buy box, cart and
 checkout summaries all reference — the header's height genuinely varies

@@ -2,17 +2,18 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Heart, RotateCcw, Share2 } from "lucide-react";
+import { Check, Heart, RotateCcw } from "lucide-react";
 import type { PdpModel } from "@/lib/pdp";
 import { formatMoneyWith, money } from "@/lib/money";
 import { localePath } from "@/lib/locale";
 import { formatVariantLabel } from "@/lib/card";
-import { useCart, useSaved, useToast } from "@/components/providers";
+import { useCart, useSaved } from "@/components/providers";
 import { BuyerProtectionNote } from "@/components/ui";
 import { QuantityStepper } from "./quantity-stepper";
 import { VariantSelector } from "./variant-selector";
 import { DealCountdown } from "@/components/merchandising/deal-countdown";
 import { DeliverToSelector } from "@/components/layout/deliver-to-selector";
+import { ShareMenu } from "./share-menu";
 
 export function BuyBox({
   model,
@@ -27,7 +28,6 @@ export function BuyBox({
 }) {
   const router = useRouter();
   const { add } = useCart();
-  const { push } = useToast();
   const { isSaved, toggle } = useSaved();
 
   const [variantId, setVariantId] = useState(model.defaultVariantId);
@@ -225,25 +225,7 @@ export function BuyBox({
             <Heart size={16} fill={saved ? "currentColor" : "none"}  />
             {saved ? "Saved" : "Save"}
           </button>
-          <button
-            onClick={async () => {
-              const url = window.location.href;
-              if (navigator.share) {
-                try {
-                  await navigator.share({ title: model.title, url });
-                  return;
-                } catch {
-                  // Buyer dismissed the share sheet — fall through to copy.
-                }
-              }
-              await navigator.clipboard.writeText(url);
-              push({ message: "Link copied" });
-            }}
-            className="tap-target flex flex-1 items-center justify-center gap-1.5 rounded-md border border-border text-small font-medium text-foreground"
-          >
-            <Share2 size={16} />
-            Share
-          </button>
+          <ShareMenu title={model.title} className="flex-1" />
         </div>
       </div>
 

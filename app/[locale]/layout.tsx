@@ -34,6 +34,13 @@ export const metadata: Metadata = {
   description:
     "Buy from verified Nigerian merchants. Every order is protected — the store is paid only after you confirm delivery.",
   icons: { icon: "/brand/favicon.ico", apple: "/brand/finstore-logo.png" },
+  openGraph: {
+    siteName: "Finstore Market",
+    type: "website",
+  },
+  // X and most in-app browsers read this; the image itself comes from the
+  // opengraph-image file conventions.
+  twitter: { card: "summary_large_image" },
 };
 
 // The chrome is black in both themes, so the browser UI colour never changes.
