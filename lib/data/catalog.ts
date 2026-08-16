@@ -2,6 +2,7 @@ import { money, naira } from "../money";
 import { allSubcategories, categoryPath, findCategory, isDigital, subcategoriesUnder } from "../taxonomy";
 import type { Deal, PackClass, Product, Review, Variant } from "../types";
 import { MERCHANTS } from "./merchants";
+import { PHOTO_POOLS } from "./photo-manifest";
 
 /**
  * Deterministic mock catalog. Generated once per process from a stable seed so
@@ -335,6 +336,43 @@ function axisValues(axis: string, leafSlug: string): string[] {
 const NOW = Date.now();
 const DAY = 86_400_000;
 
+/**
+ * Subcategories with real photography. An image from the wrong vertical is
+ * worse than a placeholder, so only matching pools are wired; everything else
+ * keeps the generated art until merchant uploads arrive.
+ */
+const PHOTO_POOL_BY_SUBCATEGORY: Record<string, string> = {
+  "dresses-gowns": "fashion",
+  "womens-tops": "fashion",
+  "two-piece-sets": "fashion",
+  "outerwear-blazers": "fashion",
+  "womens-bottoms": "active",
+  "unisex-clothing": "active",
+  "human-hair-wigs": "hair",
+  "braided-synthetic-wigs": "hair",
+  "hair-bundles-closures": "hair",
+  "handbags-totes": "bags",
+  "travel-luggage": "bags",
+  "web-software-services": "services",
+  "design-printing": "services",
+  "photography-videography": "services",
+  "ebooks-downloads": "services",
+  "courses-training": "services",
+  "events-bookings": "services",
+};
+
+/** Three views per product, walked deterministically through the pool. */
+function photosFor(leafSlug: string, index: number, title: string) {
+  const poolName = PHOTO_POOL_BY_SUBCATEGORY[leafSlug];
+  const pool = poolName ? PHOTO_POOLS[poolName] : undefined;
+  if (!pool?.length) return undefined;
+  return Array.from({ length: 3 }, (_, i) => ({
+    seed: pool[(index * 3 + i) % pool.length],
+    alt: `${title}${i === 0 ? "" : ` — view ${i + 1}`}`,
+    kind: "image" as const,
+  }));
+}
+
 function buildProduct(leafSlug: string, index: number): Product {
   const leaf = findCategory(leafSlug)!;
   const path = categoryPath(leafSlug);
@@ -417,11 +455,13 @@ function buildProduct(leafSlug: string, index: number): Product {
     leafSlug.includes("refurbished") ? "refurbished" : r() < 0.12 ? "used" : "new";
 
   const imageCount = Math.floor(between(r, 3, 8));
-  const images = Array.from({ length: imageCount }, (_, i) => ({
-    seed: `${leafSlug}-${index}-${i}`,
-    alt: `${title}${i === 0 ? "" : ` — view ${i + 1}`}`,
-    kind: "image" as const,
-  }));
+  const images =
+    photosFor(leafSlug, index, title) ??
+    Array.from({ length: imageCount }, (_, i) => ({
+      seed: `${leafSlug}-${index}-${i}`,
+      alt: `${title}${i === 0 ? "" : ` — view ${i + 1}`}`,
+      kind: "image" as const,
+    }));
 
   const unitPrice = profile.unit
     ? { value: naira(Math.round(basePrice / Math.max(1, Math.floor(between(r, 1, 25))))), unit: profile.unit }

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ShoppingCart, Package, X } from "lucide-react";
+import { Menu, ShoppingCart, Package } from "lucide-react";
 import { NAV_BAR_CATEGORIES } from "@/lib/taxonomy";
 import { localePath } from "@/lib/locale";
 import { useCart, useMarket } from "@/components/providers";
@@ -14,16 +14,12 @@ import { DeliverToSelector } from "./deliver-to-selector";
 import { LanguageSwitcher } from "./locale-switcher";
 import { FinstoreWordmark } from "@/components/brand/finstore-logo";
 import { ThemeToggle } from "@/components/brand/theme-toggle";
-import { createStorageStore, useScrolledPast, useStorageStore } from "@/lib/client-store";
-
-/** Dismissal lasts the session — the bar comes back on the next visit. */
-const trustBarStore = createStorageStore<boolean>("fm_trustbar_dismissed", false, "session");
+import { useScrolledPast } from "@/lib/client-store";
 
 export function MarketHeader({ locale }: { locale: string }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   // Collapse to rows 1 + 3 after 200px so the CTA-adjacent chrome stays lean.
   const collapsed = useScrolledPast(200);
-  const trustBarDismissed = useStorageStore(trustBarStore);
   const { itemCount, hydrated } = useCart();
   const { signedIn } = useMarket();
   const pathname = usePathname();
@@ -151,28 +147,9 @@ export function MarketHeader({ locale }: { locale: string }) {
                 {category.label}
               </Link>
             ))}
-            {/* Promo slot — rendered only when a real campaign is live. */}
-            <NavPromoSlot locale={locale} />
           </div>
         </div>
 
-        {/* Row 3 — trust bar. Names the mechanism; never says "escrow". */}
-        {!trustBarDismissed ? (
-          <div className="border-t border-chrome-border bg-primary/10">
-            <div className="mx-auto flex w-full max-w-[1440px] items-center justify-center gap-2 px-6 py-1.5">
-              <p className="text-small text-primary">
-                Every order protected. The store is paid only after you receive your item.
-              </p>
-              <button
-                onClick={() => trustBarStore.set(true)}
-                aria-label="Dismiss"
-                className="ml-2 text-primary hover:text-primary"
-              >
-                <X size={14} />
-              </button>
-            </div>
-          </div>
-        ) : null}
       </header>
 
       <NavDrawer locale={locale} open={drawerOpen} onClose={() => setDrawerOpen(false)} />
@@ -185,19 +162,5 @@ function CartBadge({ count }: { count: number }) {
     <span className="absolute -right-1.5 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-micro font-semibold text-primary-foreground">
       {count > 99 ? "99+" : count}
     </span>
-  );
-}
-
-/** An empty or filler slot is worse than no slot, so this returns null by default. */
-function NavPromoSlot({ locale }: { locale: string }) {
-  const campaign = { live: true, label: "SMEDAN grant prices — shop the programme", href: "/market/deals" };
-  if (!campaign.live) return null;
-  return (
-    <Link
-      href={localePath(locale, campaign.href)}
-      className="tap-target ml-auto hidden items-center whitespace-nowrap rounded-md px-2 text-small font-medium text-primary hover:bg-chrome-hover xl:flex"
-    >
-      {campaign.label}
-    </Link>
   );
 }

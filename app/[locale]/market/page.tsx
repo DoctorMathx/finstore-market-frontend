@@ -26,7 +26,11 @@ export const metadata: Metadata = {
 import type { Product } from "@/lib/types";
 
 function toHeroProducts(products: Product[]): HeroCardProduct[] {
-  return products.slice(0, 4).map((p) => {
+  // Stable partition: photo-backed products lead, so a card is all photography
+  // whenever the pool allows — a half-photo grid reads as half-finished.
+  const withPhoto = products.filter((p) => p.images[0].seed.startsWith("/"));
+  const withoutPhoto = products.filter((p) => !p.images[0].seed.startsWith("/"));
+  return [...withPhoto, ...withoutPhoto].slice(0, 4).map((p) => {
     const pct = discountPercent(p.price, p.originalPrice);
     return {
       href: productHref(p),
@@ -112,10 +116,19 @@ export default async function MarketHomePage({ params }: { params: Promise<{ loc
   const { config, deliverTo } = await getServerContext(locale);
   const cardOptions = { config, destinationState: deliverTo.region };
 
-  // "Delivering to you" — merchants in the buyer's own state ship fastest and
-  // convert best, so this rail leads the page below the tiles.
-  const local = CATALOG.filter((p) => p.merchant.originState === deliverTo.region && p.totalStock > 0).slice(0, 12);
   const deals = dealProducts().slice(0, 12);
+
+  // "Recommended for you" — strong live discounts weighted by demand, skipping
+  // what the Deals rail below already shows so the two rails never repeat.
+  const dealIds = new Set(deals.map((p) => p.id));
+  const recommended = dealProducts()
+    .filter((p) => p.totalStock > 0 && !dealIds.has(p.id))
+    .sort(
+      (a, b) =>
+        (discountPercent(b.price, b.originalPrice) ?? 0) * (b.unitsSold7d + 1) -
+        (discountPercent(a.price, a.originalPrice) ?? 0) * (a.unitsSold7d + 1),
+    )
+    .slice(0, 12);
 
   const railCategories = DEPARTMENTS.slice(0, 4);
 
@@ -123,15 +136,12 @@ export default async function MarketHomePage({ params }: { params: Promise<{ loc
     <PageContainer className="flex flex-col gap-14 py-6 lg:gap-16 lg:py-8">
       <HeroCardRail cards={buildHeroCards(deliverTo.region)} locale={locale} />
 
-      {local.length ? (
-        <ProductRail
-          cards={toCardModels(local, cardOptions)}
-          locale={locale}
-          title={`Ships from ${deliverTo.region}`}
-          subtitle="Closest merchants to you — usually the fastest delivery"
-          href={`/market/search?shipsFrom=${encodeURIComponent(deliverTo.region)}`}
-        />
-      ) : null}
+      <ProductRail
+        cards={toCardModels(recommended, cardOptions)}
+        locale={locale}
+        title="Recommended deals for you"
+        href="/market/deals"
+      />
 
       <ProductRail
         cards={toCardModels(deals, cardOptions)}

@@ -63,10 +63,12 @@ export function HeroCardRail({ cards, locale }: { cards: HeroCard[]; locale: str
             className={`flex w-[300px] shrink-0 snap-start flex-col rounded-xl p-5 sm:w-[330px] ${TINTS[card.tint]}`}
           >
             {card.eyebrow ? (
-              <p className="text-micro font-semibold uppercase tracking-wide text-primary">{card.eyebrow}</p>
+              <p className="text-small font-semibold text-muted-foreground">{card.eyebrow}</p>
             ) : null}
-            <h2 className="mt-1 text-h2 leading-6">{card.title}</h2>
-            {card.body ? <p className="mt-1 text-small text-muted-foreground">{card.body}</p> : null}
+            <h2 className="mt-1 text-[25px] font-bold leading-[1.16] tracking-[-0.02em] text-foreground">
+              {card.title}
+            </h2>
+            {card.body ? <p className="mt-1.5 text-small text-muted-foreground">{card.body}</p> : null}
 
             {card.products ? (
               <div className="mt-4 grid grid-cols-2 gap-2.5">

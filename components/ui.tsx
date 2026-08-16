@@ -39,6 +39,20 @@ export function ProductImage({
   className?: string;
   priority?: boolean;
 }) {
+  // A seed that is a URL path is a real photo; anything else generates art.
+  if (seed.startsWith("/")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- static assets; the optimizer is off
+      <img
+        src={seed}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
+        className={`bg-product-canvas object-cover ${className}`}
+      />
+    );
+  }
+
   const h = seedHash(seed);
   const hue = h % 360;
   const hue2 = (hue + 40) % 360;
