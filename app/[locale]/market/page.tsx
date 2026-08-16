@@ -101,14 +101,6 @@ function buildHeroCards(destinationState: string): HeroCard[] {
       tint: "slate",
       products: toHeroProducts(local),
     },
-    {
-      eyebrow: "New to Finstore Market?",
-      title: "The store is paid only after you confirm delivery",
-      body: "Your money is held safely while your order travels. Check the item, confirm receipt, and only then is the merchant paid.",
-      ctaLabel: "How it works",
-      href: "/market/help/how-it-works",
-      tint: "orange",
-    },
   ];
 
   // A card with fewer than four real products would ship an empty promise.
