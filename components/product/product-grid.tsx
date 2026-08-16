@@ -76,37 +76,12 @@ export function ProductRail({
       ) : null}
       <div className="rail -mx-4 px-4 lg:mx-0 lg:grid lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:px-0">
         {cards.slice(0, 12).map((card, index) => (
-          <div key={card.id} className="w-[46vw] max-w-[220px] shrink-0 snap-start lg:w-auto lg:max-w-none">
-            <ProductCard card={card} locale={locale} priority={index < 2} />
+          <div key={card.id} className="w-40 shrink-0 snap-start sm:w-44 lg:w-auto">
+            <ProductCard card={card} locale={locale} priority={index < 2} variant="rail" />
           </div>
         ))}
       </div>
     </section>
-  );
-}
-
-export function CategoryTiles({
-  categories,
-  locale,
-}: {
-  categories: { slug: string; label: string; icon?: string }[];
-  locale: string;
-}) {
-  return (
-    <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-6">
-      {categories.map((category) => (
-        <Link
-          key={category.slug}
-          href={localePath(locale, `/market/c/${category.slug}`)}
-          className="group flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-4 text-center transition-colors hover:border-primary/50 hover:bg-card-hover"
-        >
-          <span className="flex h-20 w-full items-center justify-center rounded-lg bg-secondary text-4xl transition-transform group-hover:scale-110">
-            {ICONS[category.icon ?? ""] ?? "🛒"}
-          </span>
-          <span className="text-small leading-5 text-foreground group-hover:text-primary">{category.label}</span>
-        </Link>
-      ))}
-    </div>
   );
 }
 
@@ -134,26 +109,3 @@ export function SubcategoryRow({
   );
 }
 
-const ICONS: Record<string, string> = {
-  shirt: "👗",
-  footprints: "👟",
-  bag: "👜",
-  fabric: "🧵",
-  hair: "💇🏾‍♀️",
-  sparkles: "💄",
-  watch: "⌚",
-  lamp: "🍳",
-  sofa: "🛋️",
-  bolt: "🔋",
-  smartphone: "📱",
-  heart: "💊",
-  basket: "🧺",
-  sprout: "🌱",
-  baby: "🧸",
-  car: "🚗",
-  monitor: "💻",
-  hammer: "🔨",
-  dumbbell: "🏋️",
-  book: "📚",
-  palette: "🎨",
-};

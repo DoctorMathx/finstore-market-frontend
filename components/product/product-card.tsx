@@ -17,15 +17,19 @@ export function ProductCard({
   locale,
   rank,
   priority = false,
+  variant = "full",
 }: {
   card: CardModel;
   locale: string;
   rank?: number;
   priority?: boolean;
+  /** "rail" compacts the card on mobile: no CTA, no ships-from, tighter padding. */
+  variant?: "full" | "rail";
 }) {
   const { add } = useCart();
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(card.id);
+  const rail = variant === "rail";
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl surface-raised transition-colors hover:border-border-strong">
@@ -61,7 +65,7 @@ export function ProductCard({
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 px-4 pb-4 pt-3">
+      <div className={`flex flex-1 flex-col gap-1.5 ${rail ? "px-3 pb-3 pt-2 lg:px-4 lg:pb-4 lg:pt-3" : "px-4 pb-4 pt-3"}`}>
         <Link
           href={localePath(locale, card.href)}
           className="line-clamp-2 min-h-10 text-small leading-5 text-foreground hover:text-primary"
@@ -84,7 +88,13 @@ export function ProductCard({
         <div className="min-h-6">
           <span className="text-price-md text-foreground">{card.priceLabel}</span>
           {card.originalPriceLabel ? (
-            <span className="ml-1.5 text-small text-subtle-foreground line-through">{card.originalPriceLabel}</span>
+            // On a 160px rail card the struck price clips; the -% badge already
+            // carries the discount there.
+            <span
+              className={`ml-1.5 text-small text-subtle-foreground line-through ${rail ? "hidden lg:inline" : ""}`}
+            >
+              {card.originalPriceLabel}
+            </span>
           ) : null}
         </div>
 
@@ -92,14 +102,14 @@ export function ProductCard({
 
         {card.dealEndsAt ? <DealCountdown endsAt={card.dealEndsAt} compact /> : null}
 
-        <p className="text-micro text-subtle-foreground">
+        <p className={`text-micro text-subtle-foreground ${rail ? "hidden lg:block" : ""}`}>
           {card.digital ? `By ${card.cartLine.merchant.name}` : `Ships from ${card.shipsFrom}`}
         </p>
         <p className="min-h-4 text-micro text-success">
           {card.digital ? "Digital — no delivery" : card.arrivesLabel ? `Arrives ${card.arrivesLabel}` : ""}
         </p>
 
-        <div className="mt-auto pt-3">
+        <div className={`mt-auto pt-3 ${rail ? "hidden lg:block" : ""}`}>
           {card.inStock ? (
             <button
               onClick={() => add(card.cartLine)}

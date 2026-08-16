@@ -24,5 +24,10 @@ export default function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|webp|avif|ico)$).*)"],
+  // Static assets must never be locale-redirected — a 307 on a font file makes
+  // every @font-face silently error and the whole site falls back to system
+  // fonts (with a naira glyph that reads as a strikethrough).
+  matcher: [
+    "/((?!api|_next/static|_next/image|fonts|brand|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|webp|avif|ico|woff2?|ttf|otf)$).*)",
+  ],
 };

@@ -471,7 +471,7 @@ function buildHistogram(count: number, average: number): number[] {
 function buildDescription(title: string, brand: string, leafLabel: string, city: string): string {
   return [
     `<p><strong>${title}</strong> — sold and dispatched from ${city}. Every unit is checked before it leaves the store.</p>`,
-    `<p>This ${leafLabel.toLowerCase().replace(/s$/, "")} is an original ${brand} product. What you see in the photos is exactly what is sent to you. Photos were taken in-store, not downloaded.</p>`,
+    `<p>This is an original ${brand} product. What you see in the photos is exactly what is sent to you. Photos were taken in-store, not downloaded.</p>`,
     "<h3>What's in the box</h3>",
     "<ul><li>1 × main item</li><li>Manufacturer packaging</li><li>Where applicable, accessories and manual</li></ul>",
     "<p>If anything is wrong with your order, raise an issue from your order page within 7 days of delivery and we will resolve it before the store is paid.</p>",

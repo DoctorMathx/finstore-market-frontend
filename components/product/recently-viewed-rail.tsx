@@ -46,13 +46,13 @@ export function RecentlyViewedRail({ locale }: { locale: string }) {
       <div className="rail -mx-4 px-4 lg:mx-0 lg:grid lg:grid-cols-6 lg:gap-3 lg:overflow-visible lg:px-0">
         {loading
           ? Array.from({ length: 6 }, (_, i) => (
-              <div key={i} className="w-[46vw] max-w-[220px] shrink-0 lg:w-auto lg:max-w-none">
+              <div key={i} className="w-40 shrink-0 sm:w-44 lg:w-auto">
                 <ProductCardSkeleton />
               </div>
             ))
           : cards.map((card) => (
-              <div key={card.id} className="w-[46vw] max-w-[220px] shrink-0 snap-start lg:w-auto lg:max-w-none">
-                <ProductCard card={card} locale={locale} />
+              <div key={card.id} className="w-40 shrink-0 snap-start sm:w-44 lg:w-auto">
+                <ProductCard card={card} locale={locale} variant="rail" />
               </div>
             ))}
       </div>

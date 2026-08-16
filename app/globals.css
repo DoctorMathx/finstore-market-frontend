@@ -4,95 +4,53 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
+ * Inter, self-hosted and self-subset (fontTools, see assets/fonts). Google's
+ * split-by-subset pipeline put U+20A6 behind a unicode-range that browsers
+ * skipped, so every naira sign fell back to a system glyph with overshooting
+ * crossbars — it read as a strikethrough through the price. These faces carry
+ * no unicode-range: whatever they contain, they render, and they are subset to
+ * exactly the character set the UI uses (~24KB per weight).
+ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/inter-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/inter-600.woff2") format("woff2");
+}
+
+/*
  * Finstore Market theme.
  *
- * Tokens are taken from finstore.africa's live stylesheet rather than invented:
- *   --background        #000000   --primary        #F97316
- *   --background-alt    #0A0A0A   --primary-hover  #FB923C
- *   --surface           #111111   --success        #10B981
- *   --foreground        #FFFFFF   --error          #EF4444
- *   --foreground-2      #A1A1AA   --border         rgb(255 255 255 / 0.1)
- *   --foreground-muted  #71717A   --card           rgb(255 255 255 / 0.02)
+ * The palette derives from finstore.africa's brand — Finstore orange #F97316
+ * on a neutral zinc scale — but the marketplace runs light by default: a white
+ * catalog reads best in direct sunlight, which is most of the daytime traffic
+ * here, and merchant photography sits on a white field without glare. The dark
+ * theme is a faithful inversion behind the toggle, not a second design.
  *
- * Dark is the default. The light theme is a faithful inversion, not a
- * different design — the same hierarchy, the same orange action colour.
+ * Chrome (header, category bar, footer, tab bar) has its own token set so it
+ * can be tuned independently, but it follows the theme.
  */
 
-/* ------------------------------------------------------------ dark (default) */
+/* ----------------------------------------------------------- light (default) */
 
 :root {
   --radius: 0.625rem;
 
-  --background: #000000;
-  --background-alt: #0a0a0a;
-  --foreground: #ffffff;
-
-  --card: #0e0e0e;
-  --card-foreground: #ffffff;
-  --card-hover: #151515;
-
-  --popover: #111111;
-  --popover-foreground: #ffffff;
-
-  /* Finstore orange. Doubles as the buy action — brand and CTA are one here. */
-  --primary: #f97316;
-  --primary-hover: #fb923c;
-  --primary-foreground: #0a0a0a;
-  --primary-soft: rgb(249 115 22 / 0.12);
-
-  --secondary: #18181b;
-  --secondary-foreground: #ffffff;
-
-  --muted: #141414;
-  --muted-foreground: #a1a1aa;
-  --subtle-foreground: #71717a;
-
-  --accent: #18181b;
-  --accent-foreground: #ffffff;
-
-  --success: #10b981;
-  --success-foreground: #04120c;
-  --success-soft: rgb(16 185 129 / 0.12);
-  --warning: #f59e0b;
-  --warning-soft: rgb(245 158 11 / 0.12);
-  --destructive: #ef4444;
-  --destructive-soft: rgb(239 68 68 / 0.12);
-
-  --border: rgb(255 255 255 / 0.1);
-  --border-strong: rgb(255 255 255 / 0.2);
-  --input: rgb(255 255 255 / 0.12);
-  --ring: #f97316;
-
-  /* Backdrop the 1:1 product frame sits on. Merchant photos letterbox onto it. */
-  --product-canvas: #0f0f11;
-  /* Lightness stops for the generated placeholder art. The hue is per-product
-     and injected inline; only the lightness changes with the theme, so a
-     placeholder never punches a bright hole in the dark page. */
-  --ph-l-1: 20%;
-  --ph-l-2: 28%;
-  --ph-s: 35%;
-  --ph-text-l: 62%;
-  --ph-text-o: 0.5;
-
-  /* Chrome — header, category bar, footer, tab bar. Deliberately identical in
-     both themes: the frame stays Finstore black while the catalog switches. */
-  --chrome: #000000;
-  --chrome-raised: #0c0c0c;
-  --chrome-foreground: #ffffff;
-  --chrome-muted: #a1a1aa;
-  --chrome-border: rgb(255 255 255 / 0.1);
-  --chrome-hover: rgb(255 255 255 / 0.06);
-
-  --chart-1: #f97316;
-  --chart-2: #10b981;
-  --chart-3: #a1a1aa;
-  --chart-4: #fb923c;
-  --chart-5: #71717a;
-}
-
-/* --------------------------------------------------------------------- light */
-
-.light {
   --background: #ffffff;
   --background-alt: #fafafa;
   --foreground: #0a0a0a;
@@ -104,6 +62,7 @@
   --popover: #ffffff;
   --popover-foreground: #0a0a0a;
 
+  /* Finstore orange. Doubles as the buy action — brand and CTA are one here. */
   --primary: #ea580c;
   --primary-hover: #c2410c;
   --primary-foreground: #ffffff;
@@ -132,7 +91,73 @@
   --input: #d4d4d8;
   --ring: #ea580c;
 
-  /* Chrome does not invert — same values as the dark theme above. */
+  /* Chrome — header, category bar, footer, tab bar. */
+  --chrome: #ffffff;
+  --chrome-raised: #fafafa;
+  --chrome-foreground: #0a0a0a;
+  --chrome-muted: #52525b;
+  --chrome-border: #e4e4e7;
+  --chrome-hover: rgb(0 0 0 / 0.04);
+
+  /* Backdrop the 1:1 product frame sits on. Merchant photos letterbox onto it. */
+  --product-canvas: #ffffff;
+  /* Lightness stops for the generated placeholder art. The hue is per-product
+     and injected inline; only the lightness changes with the theme. */
+  --ph-l-1: 90%;
+  --ph-l-2: 78%;
+  --ph-s: 48%;
+  --ph-text-l: 32%;
+  --ph-text-o: 0.7;
+
+  --chart-1: #ea580c;
+  --chart-2: #047857;
+  --chart-3: #52525b;
+  --chart-4: #c2410c;
+  --chart-5: #71717a;
+}
+
+/* ---------------------------------------------------------------------- dark */
+
+.dark {
+  --background: #000000;
+  --background-alt: #0a0a0a;
+  --foreground: #ffffff;
+
+  --card: #0e0e0e;
+  --card-foreground: #ffffff;
+  --card-hover: #151515;
+
+  --popover: #111111;
+  --popover-foreground: #ffffff;
+
+  --primary: #f97316;
+  --primary-hover: #fb923c;
+  --primary-foreground: #0a0a0a;
+  --primary-soft: rgb(249 115 22 / 0.12);
+
+  --secondary: #18181b;
+  --secondary-foreground: #ffffff;
+
+  --muted: #141414;
+  --muted-foreground: #a1a1aa;
+  --subtle-foreground: #71717a;
+
+  --accent: #18181b;
+  --accent-foreground: #ffffff;
+
+  --success: #10b981;
+  --success-foreground: #04120c;
+  --success-soft: rgb(16 185 129 / 0.12);
+  --warning: #f59e0b;
+  --warning-soft: rgb(245 158 11 / 0.12);
+  --destructive: #ef4444;
+  --destructive-soft: rgb(239 68 68 / 0.12);
+
+  --border: rgb(255 255 255 / 0.1);
+  --border-strong: rgb(255 255 255 / 0.2);
+  --input: rgb(255 255 255 / 0.12);
+  --ring: #f97316;
+
   --chrome: #000000;
   --chrome-raised: #0c0c0c;
   --chrome-foreground: #ffffff;
@@ -140,12 +165,18 @@
   --chrome-border: rgb(255 255 255 / 0.1);
   --chrome-hover: rgb(255 255 255 / 0.06);
 
-  --product-canvas: #ffffff;
-  --ph-l-1: 90%;
-  --ph-l-2: 78%;
-  --ph-s: 48%;
-  --ph-text-l: 32%;
-  --ph-text-o: 0.7;
+  --product-canvas: #0f0f11;
+  --ph-l-1: 20%;
+  --ph-l-2: 28%;
+  --ph-s: 35%;
+  --ph-text-l: 62%;
+  --ph-text-o: 0.5;
+
+  --chart-1: #f97316;
+  --chart-2: #10b981;
+  --chart-3: #a1a1aa;
+  --chart-4: #fb923c;
+  --chart-5: #71717a;
 }
 
 /* ------------------------------------------------------------------- mapping */
@@ -202,7 +233,7 @@
 
   /* Literal names — @theme inline resolves at parse time, so a var() here
      would silently resolve to nothing. */
-  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   /* One deliberate type scale. No display face — this is a utility surface. */
   --text-display: 1.75rem;
@@ -241,11 +272,11 @@
 
   html {
     -webkit-text-size-adjust: 100%;
-    color-scheme: dark;
+    color-scheme: light;
   }
 
-  html.light {
-    color-scheme: light;
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
@@ -295,11 +326,9 @@
   }
 }
 
-/* Chrome keeps its own colour scheme so native controls inside it stay dark. */
 @utility chrome-surface {
   background-color: var(--chrome);
   color: var(--chrome-foreground);
-  color-scheme: dark;
 }
 
 @utility tap-target {
@@ -328,22 +357,24 @@
 @utility surface-raised {
   background-color: var(--card);
   border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgb(9 9 11 / 0.06);
+}
+
+/* On black a hairline alone does not separate a card from the page — a faint
+   top highlight gives the edge without a second shadow. */
+.dark .surface-raised {
   box-shadow:
     inset 0 1px 0 0 rgb(255 255 255 / 0.04),
     0 1px 2px 0 rgb(0 0 0 / 0.4);
 }
 
-.light .surface-raised {
-  box-shadow: 0 1px 3px rgb(9 9 11 / 0.06);
-}
-
 @keyframes fm-pulse-ring {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(249 115 22 / 0.5);
+    box-shadow: 0 0 0 0 rgb(234 88 12 / 0.5);
   }
   50% {
-    box-shadow: 0 0 0 6px rgb(249 115 22 / 0);
+    box-shadow: 0 0 0 6px rgb(234 88 12 / 0);
   }
 }
 
@@ -367,12 +398,12 @@
   position: absolute;
   inset: 0;
   transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.06), transparent);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.7), transparent);
   animation: fm-shimmer 1.6s infinite;
 }
 
-.light .shimmer::after {
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.7), transparent);
+.dark .shimmer::after {
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.06), transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

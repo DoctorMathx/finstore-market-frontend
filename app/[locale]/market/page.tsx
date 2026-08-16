@@ -2,13 +2,13 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ShieldCheck, Store, Truck } from "lucide-react";
 import { CATALOG, dealProducts } from "@/lib/data/catalog";
-import { DEPARTMENTS, HOMEPAGE_CATEGORIES } from "@/lib/taxonomy";
+import { DEPARTMENTS } from "@/lib/taxonomy";
 import { toCardModels } from "@/lib/card";
 import { localePath } from "@/lib/locale";
 import { getServerContext } from "@/lib/server-context";
 import { PageContainer } from "@/components/ui";
 import { HeroBand, type HeroSlide } from "@/components/merchandising/hero-band";
-import { CategoryTiles, ProductRail } from "@/components/product/product-grid";
+import { ProductRail } from "@/components/product/product-grid";
 import { RecentlyViewedRail } from "@/components/product/recently-viewed-rail";
 
 export const metadata: Metadata = {
@@ -59,11 +59,6 @@ export default async function MarketHomePage({ params }: { params: Promise<{ loc
   return (
     <PageContainer className="flex flex-col gap-14 py-6 lg:gap-16 lg:py-8">
       <HeroBand slides={SLIDES} locale={locale} />
-
-      <section>
-        <h2 className="mb-4 text-h2">Shop by category</h2>
-        <CategoryTiles categories={HOMEPAGE_CATEGORIES} locale={locale} />
-      </section>
 
       {local.length ? (
         <ProductRail

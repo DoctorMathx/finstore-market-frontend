@@ -475,8 +475,5 @@ export const DEPARTMENTS: CategoryNode[] = TAXONOMY.filter((d) => !d.hidden).sor
   (a, b) => b.productCount - a.productCount,
 );
 
-/** Tiles on the homepage. */
-export const HOMEPAGE_CATEGORIES = DEPARTMENTS;
-
 /** Departments surfaced directly in the desktop category bar. */
 export const NAV_BAR_CATEGORIES = DEPARTMENTS.slice(0, 7);

@@ -103,6 +103,18 @@ Never add, rename or re-slug a node to suit the UI — it has to match the API.
 
 ## Hard-won rules
 
+- **The proxy matcher must exclude every static-asset path.** A locale 307 on
+  a font file makes all @font-face rules silently error and the whole site
+  falls back to system fonts — that is how the naira sign once rendered as a
+  strikethrough through prices. Anything added under `public/` needs a matcher
+  exclusion.
+- **Fonts are self-hosted and self-subset** (`public/fonts/*.woff2`, sources
+  and the fontTools command in `assets/fonts/`). Never reintroduce
+  `next/font/google`: Google's subset pipeline split U+20A6 behind a
+  unicode-range browsers skipped. If the UI gains a new special character,
+  add it to the subset command and regenerate.
+- No emoji as interface iconography. Lucide icons or nothing.
+
 - **Never add a segment-level `loading.tsx`.** It flushes a 200 shell before
   `notFound()` can run, turning every missing page into a soft 404. Suspense
   belongs inside pages, below the not-found decision.

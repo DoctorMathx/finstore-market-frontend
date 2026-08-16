@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "next-themes";
@@ -14,16 +13,6 @@ import { MobileTabBar } from "@/components/layout/mobile-tab-bar";
 import { ToastViewport } from "@/components/feedback/toast-viewport";
 import { OfflineBanner } from "@/components/feedback/offline-banner";
 import { AddToCartPanelHost } from "@/components/cart/add-to-cart-panel";
-
-const inter = Inter({
-  // latin-ext carries the naira sign (U+20A6). Without it ₦ falls back to a
-  // system font and renders with stray crossbars at display sizes — on a
-  // marketplace where every price starts with it, that is not cosmetic.
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-  variable: "--font-inter",
-});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://finstore.africa";
 
@@ -43,9 +32,8 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-// The chrome is black in both themes, so the browser UI colour never changes.
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
@@ -75,12 +63,18 @@ export default async function LocaleLayout({
 
   return (
     // suppressHydrationWarning: next-themes writes the theme class before paint.
-    <html lang={languageFromLocale(locale)} className={inter.variable} suppressHydrationWarning>
+    <html lang={languageFromLocale(locale)} suppressHydrationWarning>
+      <head>
+        {/* The fold renders in 400 and 600 before any CSS-discovered fetch. */}
+        <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/inter-600.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      </head>
       <body className="min-h-screen">
         <ThemeProvider
           attribute="class"
-          // Dark is the brand default, matching finstore.africa.
-          defaultTheme="dark"
+          // Light by default — best in direct sunlight, which is most of the
+          // daytime traffic. The dark theme sits behind the toggle.
+          defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
         >
