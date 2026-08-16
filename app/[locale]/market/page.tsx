@@ -1,13 +1,19 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ShieldCheck, Store, Truck } from "lucide-react";
-import { CATALOG, dealProducts } from "@/lib/data/catalog";
+import { CATALOG, dealProducts, newArrivals, productHref } from "@/lib/data/catalog";
+import { isEstablished } from "@/lib/data/merchants";
 import { DEPARTMENTS } from "@/lib/taxonomy";
 import { toCardModels } from "@/lib/card";
+import { discountPercent, naira } from "@/lib/money";
 import { localePath } from "@/lib/locale";
 import { getServerContext } from "@/lib/server-context";
 import { PageContainer } from "@/components/ui";
-import { HeroBand, type HeroSlide } from "@/components/merchandising/hero-band";
+import {
+  HeroCardRail,
+  type HeroCard,
+  type HeroCardProduct,
+} from "@/components/merchandising/hero-card-rail";
 import { ProductRail } from "@/components/product/product-grid";
 import { RecentlyViewedRail } from "@/components/product/recently-viewed-rail";
 
@@ -17,32 +23,97 @@ export const metadata: Metadata = {
     "Phones, fashion, groceries and more from verified merchants across Nigeria. Stores are paid only after you confirm delivery.",
 };
 
-const SLIDES: HeroSlide[] = [
-  {
-    eyebrow: "Grant programme",
-    title: "SMEDAN prices, live now",
-    body: "Programme-funded pricing on essentials from merchants in the scheme. While stock lasts.",
-    ctaLabel: "Shop the programme",
-    href: "/market/deals",
-    hue: 262,
-  },
-  {
-    eyebrow: "Back to school",
-    title: "Phones and laptops under ₦400,000",
-    body: "Refurbished and new, from merchants with over 1,000 completed orders.",
-    ctaLabel: "Shop phones & electronics",
-    href: "/market/c/phones-electronics",
-    hue: 200,
-  },
-  {
-    eyebrow: "Foodstuff",
-    title: "Bulk provisions, delivered",
-    body: "Rice, beans, oil and spices by the bag — priced per kg so you can compare properly.",
-    ctaLabel: "Shop groceries",
-    href: "/market/c/food-groceries",
-    hue: 150,
-  },
-];
+import type { Product } from "@/lib/types";
+
+function toHeroProducts(products: Product[]): HeroCardProduct[] {
+  return products.slice(0, 4).map((p) => {
+    const pct = discountPercent(p.price, p.originalPrice);
+    return {
+      href: productHref(p),
+      imageSeed: p.images[0].seed,
+      title: p.title,
+      // A "-1%" pill reads as a joke — single digits stay off the hero.
+      discountPercent: pct != null && pct >= 10 ? pct : undefined,
+    };
+  });
+}
+
+/** Every card is backed by live catalog data — no tile is ever an empty promise. */
+function buildHeroCards(destinationState: string): HeroCard[] {
+  const inStock = (p: Product) => p.totalStock > 0;
+
+  // The campaign card: phones and laptops under ₦400,000 from proven merchants.
+  const backToSchool = CATALOG.filter(
+    (p) =>
+      inStock(p) &&
+      p.categoryPath[0]?.slug === "phones-electronics" &&
+      ["phones", "laptops-computing"].includes(p.categorySlug) &&
+      p.price.amount <= naira(400_000).amount &&
+      p.merchant.completedOrders >= 1000,
+  ).sort((a, b) => b.unitsSold7d - a.unitsSold7d);
+
+  const deals = dealProducts().filter(inStock);
+  const endingSoon = deals.filter((p) => p.deal?.endsAt);
+  const popular = [...deals].sort(
+    (a, b) => (discountPercent(b.price, b.originalPrice) ?? 0) - (discountPercent(a.price, a.originalPrice) ?? 0),
+  );
+  const fresh = newArrivals().filter((p) => inStock(p) && isEstablished(p.merchant));
+  const local = CATALOG.filter((p) => inStock(p) && p.merchant.originState === destinationState);
+
+  const cards: HeroCard[] = [
+    {
+      eyebrow: "Back to school",
+      title: "Phones and laptops under ₦400,000",
+      body: "Refurbished and new, from merchants with over 1,000 completed orders.",
+      ctaLabel: "Shop phones & electronics",
+      href: "/market/c/phones-electronics",
+      tint: "sky",
+      products: toHeroProducts(backToSchool),
+    },
+    {
+      title: "Deals ending soon",
+      ctaLabel: "Shop all deals",
+      href: "/market/deals",
+      tint: "orange",
+      products: toHeroProducts(endingSoon),
+    },
+    {
+      title: "Popular deals",
+      body: "The biggest live discounts right now.",
+      ctaLabel: "See what's moving",
+      href: "/market/deals",
+      tint: "rose",
+      products: toHeroProducts(popular),
+    },
+    {
+      eyebrow: "Fresh finds",
+      title: "New this month",
+      ctaLabel: "Shop new arrivals",
+      href: "/market/new-arrivals",
+      tint: "emerald",
+      products: toHeroProducts(fresh),
+    },
+    {
+      title: `Ships from ${destinationState}`,
+      body: "Closest merchants to you — usually the fastest delivery.",
+      ctaLabel: "Shop nearby",
+      href: `/market/search?shipsFrom=${encodeURIComponent(destinationState)}`,
+      tint: "slate",
+      products: toHeroProducts(local),
+    },
+    {
+      eyebrow: "New to Finstore Market?",
+      title: "The store is paid only after you confirm delivery",
+      body: "Your money is held safely while your order travels. Check the item, confirm receipt, and only then is the merchant paid.",
+      ctaLabel: "How it works",
+      href: "/market/help/how-it-works",
+      tint: "orange",
+    },
+  ];
+
+  // A card with fewer than four real products would ship an empty promise.
+  return cards.filter((card) => !card.products || card.products.length === 4);
+}
 
 export default async function MarketHomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -58,7 +129,7 @@ export default async function MarketHomePage({ params }: { params: Promise<{ loc
 
   return (
     <PageContainer className="flex flex-col gap-14 py-6 lg:gap-16 lg:py-8">
-      <HeroBand slides={SLIDES} locale={locale} />
+      <HeroCardRail cards={buildHeroCards(deliverTo.region)} locale={locale} />
 
       {local.length ? (
         <ProductRail

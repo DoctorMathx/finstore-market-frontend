@@ -128,6 +128,11 @@ addresses, recent searches) runs through one `useSyncExternalStore` layer in
 writes propagate via the `storage` event, and `npm run lint` is zero-warning
 with `react-hooks/set-state-in-effect` at its default error level.
 
+The homepage hero is an Amazon-style rail of merchandising cards, each backed
+by live catalog data (a card that cannot fill its 2×2 product grid does not
+render), with paging arrows on desktop and native swipe on mobile — replacing
+the autoplay carousel, which showed one message at a time on its own schedule.
+
 Sharing is first-class: every route serves a branded 1200×630 OG banner
 (`app/[locale]/opengraph-image.tsx`), and every product page overrides it with
 a generated card — title, naira price, struck original price, merchant and
