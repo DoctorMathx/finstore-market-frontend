@@ -27,10 +27,17 @@ import type { Product } from "@/lib/types";
 
 function toHeroProducts(products: Product[]): HeroCardProduct[] {
   // Stable partition: photo-backed products lead, so a card is all photography
-  // whenever the pool allows — a half-photo grid reads as half-finished.
+  // whenever the pool allows — a half-photo grid reads as half-finished. The
+  // same photo twice in one 2×2 grid reads as a glitch, so seeds are deduped.
   const withPhoto = products.filter((p) => p.images[0].seed.startsWith("/"));
   const withoutPhoto = products.filter((p) => !p.images[0].seed.startsWith("/"));
-  return [...withPhoto, ...withoutPhoto].slice(0, 4).map((p) => {
+  const seen = new Set<string>();
+  const unique = [...withPhoto, ...withoutPhoto].filter((p) => {
+    if (seen.has(p.images[0].seed)) return false;
+    seen.add(p.images[0].seed);
+    return true;
+  });
+  return unique.slice(0, 4).map((p) => {
     const pct = discountPercent(p.price, p.originalPrice);
     return {
       href: productHref(p),

@@ -342,17 +342,55 @@ const DAY = 86_400_000;
  * keeps the generated art until merchant uploads arrive.
  */
 const PHOTO_POOL_BY_SUBCATEGORY: Record<string, string> = {
+  // fashion & apparel
   "dresses-gowns": "fashion",
   "womens-tops": "fashion",
   "two-piece-sets": "fashion",
   "outerwear-blazers": "fashion",
   "womens-bottoms": "active",
   "unisex-clothing": "active",
+  // footwear
+  sneakers: "sneakers",
+  "mens-shoes": "sneakers",
+  // hair
   "human-hair-wigs": "hair",
   "braided-synthetic-wigs": "hair",
   "hair-bundles-closures": "hair",
+  // bags
   "handbags-totes": "bags",
   "travel-luggage": "bags",
+  // beauty
+  "perfume-cologne": "beauty",
+  "body-mist-spray": "beauty",
+  makeup: "beauty",
+  "skincare-face": "beauty",
+  "body-care-lotions": "beauty",
+  // electronics
+  phones: "phones",
+  "laptops-computing": "laptops",
+  "audio-speakers": "audio",
+  // jewelry & watches
+  watches: "watches",
+  "necklaces-pendants": "jewelry",
+  earrings: "jewelry",
+  rings: "jewelry",
+  "bracelets-anklets": "jewelry",
+  "jewelry-sets": "jewelry",
+  // home & furniture
+  "home-decor": "homeware",
+  "sofas-living-room": "furniture",
+  "tables-chairs": "furniture",
+  // food
+  "fresh-produce": "grocery",
+  "bakery-prepared-food": "grocery",
+  // kids
+  "toys-ride-ons": "kids",
+  // power
+  "solar-panels-kits": "power",
+  // automotive
+  "car-accessories-care": "auto",
+  "engine-transmission-parts": "auto",
+  // services & digital
   "web-software-services": "services",
   "design-printing": "services",
   "photography-videography": "services",

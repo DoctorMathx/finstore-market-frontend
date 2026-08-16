@@ -128,14 +128,16 @@ addresses, recent searches) runs through one `useSyncExternalStore` layer in
 writes propagate via the `storage` event, and `npm run lint` is zero-warning
 with `react-hooks/set-state-in-effect` at its default error level.
 
-Product photography: `public/products/` holds ~160 curated shots (downscaled
-to 800px JPEG) lifted from the sibling template catalogs — dresses, activewear,
-wigs, handbags, and creator portraits for Services & Digital. The catalog
-assigns them deterministically to the matching subcategories via
-`lib/data/photo-manifest.ts`; a photo from the wrong vertical is worse than a
-placeholder, so unmatched departments keep the generated art until merchant
-uploads arrive. A seed beginning with `/` renders as a real image; anything
-else generates placeholder art.
+Product photography: `public/products/` holds ~230 shots across 18 pools —
+template-catalog product shots (activewear, wigs, handbags, creator portraits)
+plus Pexels stock (free license) for fashion, phones, laptops, watches,
+sneakers, beauty, jewelry, furniture, décor, groceries, toys, audio, solar and
+automotive — all downscaled to ≤800px JPEG and content-reviewed on a contact
+sheet before inclusion. The catalog assigns them deterministically per
+subcategory via `lib/data/photo-manifest.ts`; a photo from the wrong vertical
+is worse than a placeholder, so unmatched subcategories keep the generated art
+until merchant uploads arrive. A seed beginning with `/` renders as a real
+image; anything else generates placeholder art.
 
 The homepage hero is an Amazon-style rail of merchandising cards, each backed
 by live catalog data (a card that cannot fill its 2×2 product grid does not
