@@ -1,0 +1,285 @@
+# Finstore Market — frontend
+
+Buyer-facing marketplace at `finstore.africa/[locale]/market`, built to the
+`finstore-market-frontend-spec` v0.1.
+
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind v4 ·
+shadcn/ui (Radix) · next-themes.
+
+```bash
+npm install
+npm run dev     # http://localhost:3000 → redirects to /en-NG/market
+npm run build
+npm run lint
+```
+
+---
+
+## Brand
+
+Tokens are lifted from finstore.africa's live stylesheet, not invented:
+
+| Token | Dark (default) | Light |
+|---|---|---|
+| `--background` | `#000000` | `#ffffff` |
+| `--primary` | `#f97316` | `#ea580c` |
+| `--primary-hover` | `#fb923c` | `#c2410c` |
+| `--muted-foreground` | `#a1a1aa` | `#52525b` |
+| `--border` | `rgb(255 255 255 / 0.1)` | `#e4e4e7` |
+| `--success` | `#10b981` | `#047857` |
+
+**Dark is the default**, matching the marketing site. `next-themes` writes a
+`light` class for the toggle; every colour is a token, so the light theme is a
+token swap rather than a second design.
+
+**The chrome never inverts.** Header, category bar, trust bar, footer, mobile
+tab bar and every popover anchored in them use a separate `--chrome-*` token set
+whose values are identical in both themes. Light mode turns the *catalog* white
+and leaves the frame Finstore black, which keeps the brand constant and gives
+merchant photography a white field to sit on. Chrome carries
+`color-scheme: dark` so native controls inside it stay dark too.
+
+The logo in `public/brand/` is the mark finstore.africa serves (it ships as
+`fintava-logo.png` there, with `alt="FinStore"`). It is red on transparency, so
+it needs no per-theme variant.
+
+**Orange is both the brand and the buy action.** White on `#f97316` is ~2.9:1
+and fails AA, so `--primary-foreground` is near-black — never put `text-white`
+on a primary or success surface.
+
+**The spec's violet is gone.** `finstore-market-frontend-spec` v0.1 names
+`#8B5CF6` as "brand primary, derived from Finstore's existing identity"; the
+live product is black and orange, so the live brand won. Everything else in the
+spec's token section — the type scale, 44px tap targets, the single shadow, the
+radius rules — is unchanged.
+
+Product-image placeholders are theme-aware: the hue is per-product and injected
+inline, while lightness comes from `--ph-*`, so a grid of placeholders never
+punches bright rectangles out of a black page. Real merchant photography will
+still be light — that is the accepted cost of a dark catalog.
+
+Inter is loaded with the `latin-ext` subset because the `latin` subset has no
+naira sign (U+20A6). Without it every price falls back to a system font and the
+glyph renders with stray crossbars.
+
+---
+
+## Categories
+
+The tree mirrors the backend exactly: **21 departments containing 108
+subcategories, two levels deep**. Only a subcategory can hold a product —
+departments are navigation, not assignment targets. Slugs and labels are
+copied verbatim, so they line up with the API when it is wired in.
+
+Three rules come straight from the source data:
+
+- **`hidden` subcategories are not merchandised.** Building & Hardware, Sports &
+  Fitness, Books & Stationery and Art & Crafts are hidden in full, so they stay
+  out of navigation, tiles, search, tabs and the sitemap, and their routes 404.
+  They remain in the tree because the tree is the backend's, not ours.
+- **`productCount` is carried but never displayed as a listing count.** It is
+  the live backend figure and is used to order departments and to weight the
+  mock catalog. Every count the UI shows comes from the actual result set.
+- **Services & Digital does not ship.** It is flagged `digital`, which gives its
+  products a `digital` pack class: no delivery quote, no arrival date, no
+  destination selector — the buy box says the item is sent by email instead,
+  and a digital-only merchant group is quoted at zero.
+
+The live catalog is ~62,000 products. Generating that in-process would be
+pointless, so `CATALOG_SCALE` (0.06 in `lib/data/catalog.ts`) gives each
+subcategory a proportional slice of a ~3,700-product mock — the real catalog's
+shape at a workable size. Fashion & Apparel is the biggest department in both.
+
+---
+
+## What is built
+
+Spec build order steps **0 through 14**, with the transactional path running
+end to end against mock data.
+
+| Step | Surface | State |
+|---|---|---|
+| 0 | Locale routing, country config, `formatMoney`, schema-driven addresses | Done |
+| 1 | Tokens, header, footer, nav drawer, account menu, mobile tab bar | Done |
+| 2 | Backend category tree, department tiles, drawer panels | Done |
+| 3 | ProductCard, grid, rails, skeletons | Done |
+| 4 | PLP — URL-state filters, facet counts, sort, pagination | Done |
+| 5 | Search bar, typeahead, results, search empty state | Done |
+| 6 | PDP — gallery, buy box, variants, quantity, pricing, merchant card | Done |
+| 7 | Deals, best sellers, new arrivals | Done |
+| 8 | Auth — email + password, with reset request | Done (no auth service) |
+| 9 | Cart with merchant grouping and per-group delivery quoting | Done |
+| 10 | Checkout, both steps, promo codes, grant credit | Done (no real PSP) |
+| 11 | Orders, tracking timeline, confirm receipt | Done |
+| 12 | Returns and disputes | Done |
+| 13 | Reviews — summary, histogram filters, list | Done |
+| 14 | Account, addresses, saved items, help centre | Done |
+
+Plus a full visual pass on shadcn/ui: the primitives in `components/ui/` are
+shadcn source, and `components/ui.tsx` holds the marketplace-specific pieces
+(price block, rating, product placeholder, trust notes) built on top of them.
+The add-to-cart panel and mobile filter sheet are Radix Sheets and the
+country-switch confirmation is a Radix AlertDialog, so focus trapping, scroll
+locking and Escape come from the primitive rather than being hand-rolled.
+
+Client persistence (cart, saved items, recently viewed, user, orders, saved
+addresses, recent searches) runs through one `useSyncExternalStore` layer in
+`lib/client-store.ts` — no read-localStorage-in-an-effect anywhere, cross-tab
+writes propagate via the `storage` event, and `npm run lint` is zero-warning
+with `react-hooks/set-state-in-effect` at its default error level.
+
+Sticky offsets never guess: the header measures itself with a ResizeObserver
+and publishes `--header-h`, which the mobile filter bar, PDP buy box, cart and
+checkout summaries all reference — the header's height genuinely varies
+(dismissible trust bar, collapsing category row).
+
+Every route in the spec's route map exists. `npm run build` compiles 29 routes
+with zero type errors and zero lint errors.
+
+---
+
+## Architecture
+
+```
+app/
+  [locale]/              root layout — html lang comes from the locale segment
+    market/              every buyer surface
+  api/
+    suggest              search typeahead (3 zones)
+    products             card models by id, for localStorage-driven surfaces
+    cart/validate        stock + price revalidation, per-merchant delivery quotes
+    promo                server-side promo validation with real reasons
+proxy.ts                 bare-path → locale redirect (307)
+lib/
+  country.ts             CountryConfig — the root config object
+  locale.ts              locale segment helpers, hreflang set
+  money.ts               Money (minor units) + the single formatMoney boundary
+  taxonomy.ts            backend category tree (2 levels), facetSchema per node
+  delivery.ts            per-merchant-group dimensional-weight quoting
+  plp.ts                 URL query → filtered results + facet counts
+  card.ts / pdp.ts       serializable view models
+  data/                  deterministic mock catalog (~3,700 products, 20 merchants)
+components/              layout · discovery · product · cart · checkout · orders · merchandising
+```
+
+**Money.** Every amount is an integer in minor units. `formatMoney` is the only
+place a currency symbol is written, and it refuses to convert between
+currencies — a mismatched currency renders with its ISO code instead of a
+converted number the buyer cannot actually pay.
+
+**Country.** Nigeria is the only live country. Ghana, Kenya and South Africa are
+config entries with their own currency, region labels, address schema and
+payment methods, so adding one is data rather than code. The landmark field is a
+config flag, not a hardcoded input.
+
+**Filters are URL state.** `?brand=samsung,tecno&price=0-200000&sort=price_asc`
+is shareable, back-button correct and server-rendered. Facet counts are computed
+against every *other* active filter, so zero-count options are disabled rather
+than hidden.
+
+**Delivery is quoted per merchant group.** Pack-class units accumulate across a
+group with a volume discount, so consolidating with one merchant is visibly
+cheaper. Each group carries its own date — there is no blended order date
+anywhere in the UI.
+
+---
+
+## Deliberate deviations from the spec
+
+Four, all flagged rather than quietly taken:
+
+1. **Variant selectors live in the buy box at every breakpoint**, not in the
+   middle column on desktop. Variant choice drives price, stock, SKU and the
+   URL; splitting the control from the state it drives across breakpoints meant
+   either duplicating state or a portal. The buy box is where the decision is
+   made, so the control sits there.
+
+2. **`ProductCard` is a client component.** Every card needs an interactive
+   add-to-cart and save control, so the card is inherently interactive. It
+   renders from a fully serializable `CardModel` with prices pre-formatted
+   server-side, which keeps the payload small. Splitting the two buttons into
+   islands over a server-rendered card is the next optimisation if the PDP/PLP
+   bundle budget gets tight.
+
+3. **`/market/c/[slug]/[sub]` permanently redirects to `/market/c/[sub]`.**
+   Category slugs are globally unique and permanent, so a nested path is a
+   second URL for one page. The route exists to catch inbound deep links and
+   fold them into the canonical one.
+
+4. **Violet is replaced by the live Finstore orange**, and the whole surface is
+   dark by default. See Brand above.
+
+5. **21 departments, not the spec's 12–14 L1 cap.** The spec caps the navigation
+   spine on the grounds that a wide menu over a thin catalog reads as abandoned.
+   The real tree has 21 departments and a genuinely deep catalog behind them, so
+   the cap no longer applies — but the drawer still opens on six and the desktop
+   bar shows seven, ordered by real product count, rather than listing all 21.
+
+6. **Auth is email + password, not phone + OTP.** The spec argues for phone-first
+   OTP because "Nigerian buyers will not remember a password and password reset
+   over email is a conversion cliff"; email/password was requested instead. The
+   cliff is mitigated by putting the reset request inside the sign-in form, and
+   by keeping browsing, cart and add-to-cart entirely unauthenticated — only
+   checkout and order history ask for an account. The account identity is the
+   email; the delivery phone stays on the address, where the rider needs it.
+
+---
+
+## What is mocked, and what it would take to make real
+
+| Area | Now | To productionise |
+|---|---|---|
+| Catalog | ~1,900 deterministic products from a seeded generator, in-process | Replace `lib/data/catalog.ts` with API calls; `Product` in `lib/types.ts` is already the contract |
+| Search | Substring match over the in-memory catalog | Typesense/Meilisearch behind `/api/suggest` and `runQuery`; the PLP query shape is designed to map onto a facet engine |
+| Product images | Deterministic SVG placeholders keyed by seed | `next/image` against the transcode pipeline; `images: { unoptimized: true }` comes out of `next.config.ts` |
+| Auth | Any valid email + password signs in; `{name, email}` in `localStorage`, never the password | Real sign-up / sign-in / reset endpoints and a session token; the form already handles validation, reveal, returnTo and the reset request |
+| Payment | 900ms delay, then a local order record | Fintava redirect. The idempotency key is already generated per attempt and enforced on write |
+| Orders | `localStorage`, with a visible "Demo:" control to advance status | Order service. `StoredOrder` mirrors the intended response shape |
+| Delivery quotes | `lib/delivery.ts` zone/pack-class model | The synchronous quote endpoint named as an open question in the spec — `/api/cart/validate` is already the right seam |
+| Translations | English catalogue only; switcher ships and lists the rest as "Coming soon" | `next-intl` message catalogues; language options already render per country |
+
+---
+
+## Known follow-ups
+
+- **No segment-level `loading.tsx`.** It was the cause of the soft-404: a
+  loading boundary makes Next flush the shell (status 200) before the page can
+  throw `notFound()`. With it removed, bogus category/product URLs and hidden
+  categories return real 404s (verified in production mode). Pages are
+  in-memory fast and links prefetch, so the UX cost is negligible — if a slow
+  data source arrives later, put Suspense *inside* the page below the
+  `notFound()` decision, not a segment boundary above it.
+- **`react-hooks/set-state-in-effect` is set to `warn`** (18 warnings). Every
+  occurrence is the same pattern: reading client-only state — cart, saved items,
+  cookies, stored orders — once on mount, because it cannot be server-rendered
+  without a hydration mismatch. The clean fix is `useSyncExternalStore` with a
+  cached snapshot in the providers; left visible rather than silenced.
+- Best-seller ranking uses a per-product `unitsSold7d` field as a stand-in for a
+  rolling completed-order window. The ≥50 completed-order suppression threshold
+  is implemented and reads from that field.
+- Reviews are generated from each product's rating histogram, so the histogram
+  and the review list agree. There is no write path — reviews ship after launch
+  per the spec's own sequencing.
+- No test suite. The next thing worth writing is unit coverage on `lib/plp.ts`
+  (facet counts) and `lib/delivery.ts` (group accumulation), which is where the
+  logic actually lives.
+- Merchants carry a `sells` list of L1 slugs and the catalog only assigns them
+  products from those categories — an auto-parts store listing iPhones reads as
+  fake immediately. Real merchant catalogs will supply this naturally.
+
+---
+
+## Accessibility and performance notes
+
+- Minimum 44×44px tap targets, 2px violet focus ring at 2px offset throughout.
+- Drawer, filter sheet and lightbox trap focus and close on Escape.
+- Colour is never the only signal — out of stock says "Out of stock".
+- PLP and PDP are server-rendered with real `<h1>`s and full description text in
+  the initial HTML; `Product`/`Offer`/`AggregateRating`/`BreadcrumbList`/`ItemList`
+  JSON-LD is emitted server-side.
+- `noindex` on cart, checkout, account, orders, saved items, sign-in and search;
+  filtered PLPs go `noindex,follow` past two active filters.
+- Numbered pagination, not infinite scroll — shareable URLs, indexable, and
+  predictable memory on low-end Android.
+- Countdown timers render only inside a 48-hour window and are computed from a
+  server-supplied end timestamp, never from the device clock alone.

@@ -1,0 +1,386 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Finstore Market theme.
+ *
+ * Tokens are taken from finstore.africa's live stylesheet rather than invented:
+ *   --background        #000000   --primary        #F97316
+ *   --background-alt    #0A0A0A   --primary-hover  #FB923C
+ *   --surface           #111111   --success        #10B981
+ *   --foreground        #FFFFFF   --error          #EF4444
+ *   --foreground-2      #A1A1AA   --border         rgb(255 255 255 / 0.1)
+ *   --foreground-muted  #71717A   --card           rgb(255 255 255 / 0.02)
+ *
+ * Dark is the default. The light theme is a faithful inversion, not a
+ * different design — the same hierarchy, the same orange action colour.
+ */
+
+/* ------------------------------------------------------------ dark (default) */
+
+:root {
+  --radius: 0.625rem;
+
+  --background: #000000;
+  --background-alt: #0a0a0a;
+  --foreground: #ffffff;
+
+  --card: #0e0e0e;
+  --card-foreground: #ffffff;
+  --card-hover: #151515;
+
+  --popover: #111111;
+  --popover-foreground: #ffffff;
+
+  /* Finstore orange. Doubles as the buy action — brand and CTA are one here. */
+  --primary: #f97316;
+  --primary-hover: #fb923c;
+  --primary-foreground: #0a0a0a;
+  --primary-soft: rgb(249 115 22 / 0.12);
+
+  --secondary: #18181b;
+  --secondary-foreground: #ffffff;
+
+  --muted: #141414;
+  --muted-foreground: #a1a1aa;
+  --subtle-foreground: #71717a;
+
+  --accent: #18181b;
+  --accent-foreground: #ffffff;
+
+  --success: #10b981;
+  --success-foreground: #04120c;
+  --success-soft: rgb(16 185 129 / 0.12);
+  --warning: #f59e0b;
+  --warning-soft: rgb(245 158 11 / 0.12);
+  --destructive: #ef4444;
+  --destructive-soft: rgb(239 68 68 / 0.12);
+
+  --border: rgb(255 255 255 / 0.1);
+  --border-strong: rgb(255 255 255 / 0.2);
+  --input: rgb(255 255 255 / 0.12);
+  --ring: #f97316;
+
+  /* Backdrop the 1:1 product frame sits on. Merchant photos letterbox onto it. */
+  --product-canvas: #0f0f11;
+  /* Lightness stops for the generated placeholder art. The hue is per-product
+     and injected inline; only the lightness changes with the theme, so a
+     placeholder never punches a bright hole in the dark page. */
+  --ph-l-1: 20%;
+  --ph-l-2: 28%;
+  --ph-s: 35%;
+  --ph-text-l: 62%;
+  --ph-text-o: 0.5;
+
+  /* Chrome — header, category bar, footer, tab bar. Deliberately identical in
+     both themes: the frame stays Finstore black while the catalog switches. */
+  --chrome: #000000;
+  --chrome-raised: #0c0c0c;
+  --chrome-foreground: #ffffff;
+  --chrome-muted: #a1a1aa;
+  --chrome-border: rgb(255 255 255 / 0.1);
+  --chrome-hover: rgb(255 255 255 / 0.06);
+
+  --chart-1: #f97316;
+  --chart-2: #10b981;
+  --chart-3: #a1a1aa;
+  --chart-4: #fb923c;
+  --chart-5: #71717a;
+}
+
+/* --------------------------------------------------------------------- light */
+
+.light {
+  --background: #ffffff;
+  --background-alt: #fafafa;
+  --foreground: #0a0a0a;
+
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --card-hover: #fafafa;
+
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+
+  --primary: #ea580c;
+  --primary-hover: #c2410c;
+  --primary-foreground: #ffffff;
+  --primary-soft: rgb(234 88 12 / 0.08);
+
+  --secondary: #f4f4f5;
+  --secondary-foreground: #0a0a0a;
+
+  --muted: #f4f4f5;
+  --muted-foreground: #52525b;
+  --subtle-foreground: #71717a;
+
+  --accent: #f4f4f5;
+  --accent-foreground: #0a0a0a;
+
+  --success: #047857;
+  --success-foreground: #ffffff;
+  --success-soft: rgb(4 120 87 / 0.08);
+  --warning: #b45309;
+  --warning-soft: rgb(180 83 9 / 0.08);
+  --destructive: #dc2626;
+  --destructive-soft: rgb(220 38 38 / 0.08);
+
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --input: #d4d4d8;
+  --ring: #ea580c;
+
+  /* Chrome does not invert — same values as the dark theme above. */
+  --chrome: #000000;
+  --chrome-raised: #0c0c0c;
+  --chrome-foreground: #ffffff;
+  --chrome-muted: #a1a1aa;
+  --chrome-border: rgb(255 255 255 / 0.1);
+  --chrome-hover: rgb(255 255 255 / 0.06);
+
+  --product-canvas: #ffffff;
+  --ph-l-1: 90%;
+  --ph-l-2: 78%;
+  --ph-s: 48%;
+  --ph-text-l: 32%;
+  --ph-text-o: 0.7;
+}
+
+/* ------------------------------------------------------------------- mapping */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-hover: var(--card-hover);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-destructive: var(--destructive);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-product-canvas: var(--product-canvas);
+  --color-chrome: var(--chrome);
+  --color-chrome-raised: var(--chrome-raised);
+  --color-chrome-foreground: var(--chrome-foreground);
+  --color-chrome-muted: var(--chrome-muted);
+  --color-chrome-border: var(--chrome-border);
+  --color-chrome-hover: var(--chrome-hover);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  /* Literal names — @theme inline resolves at parse time, so a var() here
+     would silently resolve to nothing. */
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* One deliberate type scale. No display face — this is a utility surface. */
+  --text-display: 1.75rem;
+  --text-display--line-height: 2.125rem;
+  --text-display--font-weight: 600;
+  --text-display--letter-spacing: -0.02em;
+  --text-h1: 1.375rem;
+  --text-h1--line-height: 1.75rem;
+  --text-h1--font-weight: 600;
+  --text-h1--letter-spacing: -0.015em;
+  --text-h2: 1.125rem;
+  --text-h2--line-height: 1.5rem;
+  --text-h2--font-weight: 600;
+  --text-h2--letter-spacing: -0.01em;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5rem;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.25rem;
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1rem;
+  --text-micro--font-weight: 500;
+  --text-price-lg: 1.625rem;
+  --text-price-lg--line-height: 1.875rem;
+  --text-price-lg--font-weight: 600;
+  --text-price-lg--letter-spacing: -0.02em;
+  --text-price-md: 1.125rem;
+  --text-price-md--line-height: 1.375rem;
+  --text-price-md--font-weight: 600;
+  --text-price-md--letter-spacing: -0.01em;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+
+  html.light {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-background text-muted-foreground antialiased;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.5rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply text-foreground;
+  }
+
+  /* Visible focus ring everywhere — 2px orange at 2px offset. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Merchant-authored rich text is sanitised upstream; this styles what survives. */
+  .rich-text p {
+    margin-bottom: 0.75rem;
+  }
+  .rich-text h3 {
+    @apply text-foreground;
+    font-size: var(--text-h2);
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+  .rich-text ul,
+  .rich-text ol {
+    margin: 0 0 0.75rem 1.25rem;
+    list-style: disc;
+  }
+  .rich-text ol {
+    list-style: decimal;
+  }
+  .rich-text li {
+    margin-bottom: 0.25rem;
+  }
+  .rich-text strong {
+    @apply text-foreground;
+    font-weight: 600;
+  }
+}
+
+/* Chrome keeps its own colour scheme so native controls inside it stay dark. */
+@utility chrome-surface {
+  background-color: var(--chrome);
+  color: var(--chrome-foreground);
+  color-scheme: dark;
+}
+
+@utility tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Horizontal product rails: scroll-snap on mobile, no visible scrollbar. */
+@utility rail {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * On black, a hairline border alone does not separate a card from the page.
+ * A very low-alpha top highlight gives the edge without adding a second shadow.
+ */
+@utility surface-raised {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.04),
+    0 1px 2px 0 rgb(0 0 0 / 0.4);
+}
+
+.light .surface-raised {
+  box-shadow: 0 1px 3px rgb(9 9 11 / 0.06);
+}
+
+@keyframes fm-pulse-ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(249 115 22 / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgb(249 115 22 / 0);
+  }
+}
+
+.pulse-ring {
+  animation: fm-pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes fm-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.06), transparent);
+  animation: fm-shimmer 1.6s infinite;
+}
+
+.light .shimmer::after {
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.7), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
