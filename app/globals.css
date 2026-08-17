@@ -109,19 +109,17 @@
   --input: #d4d4d8;
   --ring: #ea580c;
 
-  /* Chrome — header, category bar, footer, tab bar. Deliberately a faded
-     black rather than white: against a white catalog a white header has to be
-     drawn with a border to exist at all, and the eye reads the whole page as
-     one undifferentiated sheet. Charcoal makes the frame a frame. */
-  --chrome: #18181b;
-  --chrome-raised: #232327;
-  --chrome-foreground: #ffffff;
-  --chrome-muted: #a1a1aa;
-  --chrome-border: rgb(255 255 255 / 0.12);
-  --chrome-hover: rgb(255 255 255 / 0.07);
-  /* Orange needs a different ink on charcoal than on white — the page's
-     --primary-strong is a deep burnt orange that all but disappears here. */
-  --chrome-accent: #fb923c;
+  /* Chrome — header, category bar, footer, tab bar. */
+  --chrome: #ffffff;
+  --chrome-raised: #fafafa;
+  --chrome-foreground: #0a0a0a;
+  --chrome-muted: #52525b;
+  --chrome-border: #e4e4e7;
+  --chrome-hover: rgb(0 0 0 / 0.04);
+  /* Light chrome is the same white as the page, so orange text needs no
+     special ink here — this matches --primary-strong exactly. It earns its
+     keep on the dark theme, where chrome is black. */
+  --chrome-accent: #b8420a;
 
   /* Backdrop the 1:1 product frame sits on. Merchant photos letterbox onto it. */
   --product-canvas: #ffffff;
