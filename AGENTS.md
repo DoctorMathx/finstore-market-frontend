@@ -139,3 +139,23 @@ npx tsc --noEmit    # must be clean
 npm run lint        # must be completely clean — zero errors, zero warnings
 npm run build       # must compile every route
 ```
+
+## Photography and colour
+
+Every leaf category must resolve to a pool in `PHOTO_POOL_BY_SUBCATEGORY`
+(`lib/data/catalog.ts`). There is no placeholder tier in production — a
+category rendering generated art reads as an empty shelf. When you add a
+subcategory, add its pool mapping in the same change.
+
+New photos are staged, rendered onto a numbered contact sheet, looked at, and
+only then copied into `public/products/<pool>/`. Regenerate
+`lib/data/photo-manifest.ts` from disk; never hand-edit it.
+
+Two orange tokens, and they are not interchangeable. `--primary` is the fill
+(white on it is 3.6:1, so its foreground is near-black); `--primary-strong` is
+the ink for orange **text** and is the only one that clears 4.5:1 on white and
+on the hero card tints. Use `text-primary-strong`, never `text-primary`.
+
+Anything pinned to the bottom of a phone screen offsets by `--tabbar-h`, which
+already includes `env(safe-area-inset-bottom)` and collapses to 0 at `lg`.
+Hardcoding 56px puts the element under the tab bar on a notched device.

@@ -128,16 +128,23 @@ addresses, recent searches) runs through one `useSyncExternalStore` layer in
 writes propagate via the `storage` event, and `npm run lint` is zero-warning
 with `react-hooks/set-state-in-effect` at its default error level.
 
-Product photography: `public/products/` holds ~230 shots across 18 pools —
-template-catalog product shots (activewear, wigs, handbags, creator portraits)
-plus Pexels stock (free license) for fashion, phones, laptops, watches,
-sneakers, beauty, jewelry, furniture, décor, groceries, toys, audio, solar and
-automotive — all downscaled to ≤800px JPEG and content-reviewed on a contact
-sheet before inclusion. The catalog assigns them deterministically per
-subcategory via `lib/data/photo-manifest.ts`; a photo from the wrong vertical
-is worse than a placeholder, so unmatched subcategories keep the generated art
-until merchant uploads arrive. A seed beginning with `/` renders as a real
-image; anything else generates placeholder art.
+Product photography: `public/products/` holds 611 shots across 71 pools —
+template-catalog product shots (activewear, wigs, handbags) plus Pexels stock
+(free licence) — all downscaled to ≤800px JPEG and content-reviewed on a
+numbered contact sheet before inclusion. The searches return lightning storms,
+crowd shots and skydivers alongside the products, so nothing ships unlooked-at.
+
+Coverage is total: `PHOTO_POOL_BY_SUBCATEGORY` in `lib/data/catalog.ts` maps
+every one of the 108 visible subcategories (and the hidden ones, for when a
+department is switched on) to a pool, so no product anywhere falls back to
+generated art. Where no pool is specific enough the nearest honest neighbour is
+used — a wardrobe photo for storage furniture is right; a random gradient is
+not. Regenerate `lib/data/photo-manifest.ts` from disk rather than editing it.
+
+Galleries stride their pool by a step coprime to the pool size. Striding by the
+gallery length instead shares a factor with most pool sizes and collapses a
+nine-photo pool to three distinct cards across a grid page. A seed beginning
+with `/` renders as a real image; anything else generates placeholder art.
 
 The homepage hero is an Amazon-style rail of merchandising cards, each backed
 by live catalog data (a card that cannot fill its 2×2 product grid does not
