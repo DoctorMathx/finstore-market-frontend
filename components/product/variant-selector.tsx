@@ -95,7 +95,7 @@ export function VariantSelector({
                     disabled={!available}
                     aria-pressed={active}
                     className={`tap-target relative rounded-md border px-3 text-small font-medium ${
-                      active ? "border-primary bg-primary-soft text-primary" : "border-border text-foreground"
+                      active ? "border-primary bg-primary-soft text-primary-strong" : "border-border text-foreground"
                     } ${available ? "" : "cursor-not-allowed text-subtle-foreground"}`}
                   >
                     {value}

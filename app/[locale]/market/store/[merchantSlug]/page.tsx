@@ -52,7 +52,7 @@ export default async function StorePage({ params, searchParams }: Props) {
           <div>
             <p className="flex items-center gap-1.5 text-h2">
               {merchant.name}
-              {merchant.verified ? <BadgeCheck size={18} className="text-primary" aria-label="Verified merchant" /> : null}
+              {merchant.verified ? <BadgeCheck size={18} className="text-primary-strong" aria-label="Verified merchant" /> : null}
             </p>
             {merchant.rating !== undefined ? (
               <p className="flex items-center gap-1.5 text-small text-muted-foreground">

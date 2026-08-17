@@ -64,7 +64,7 @@ export function LanguageSwitcher() {
             >
               {language.label}
               {!language.live ? <span className="text-micro text-chrome-muted">Coming soon</span> : null}
-              {language.code === current.code ? <span className="text-primary">✓</span> : null}
+              {language.code === current.code ? <span className="text-primary-strong">✓</span> : null}
             </button>
           ))}
         </div>

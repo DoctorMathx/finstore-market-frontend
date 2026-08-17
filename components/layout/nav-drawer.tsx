@@ -127,7 +127,7 @@ export function NavDrawer({
               {!showAllL1 ? (
                 <button
                   onClick={() => setShowAllL1(true)}
-                  className="tap-target flex w-full items-center gap-1 px-4 py-3 text-left text-body font-medium text-primary hover:bg-background-alt"
+                  className="tap-target flex w-full items-center gap-1 px-4 py-3 text-left text-body font-medium text-primary-strong hover:bg-background-alt"
                 >
                   See all {DEPARTMENTS.length} departments
                 </button>
@@ -165,7 +165,7 @@ export function NavDrawer({
               <p className="px-4 pb-1 pt-4 text-micro uppercase tracking-wide text-subtle-foreground">{current.label}</p>
               <Link
                 href={localePath(locale, `/market/c/${current.slug}`)}
-                className="tap-target flex w-full items-center px-4 py-3 text-body font-medium text-primary hover:bg-background-alt"
+                className="tap-target flex w-full items-center px-4 py-3 text-body font-medium text-primary-strong hover:bg-background-alt"
               >
                 See all in {current.label}
               </Link>

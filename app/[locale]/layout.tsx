@@ -97,7 +97,7 @@ export default async function LocaleLayout({
                     </a>
                     <OfflineBanner />
                     <MarketHeader locale={locale} />
-                    <main id="main" className="pb-20 lg:pb-10">
+                    <main id="main" className="pb-10">
                       {children}
                     </main>
                     <MarketFooter locale={locale} />

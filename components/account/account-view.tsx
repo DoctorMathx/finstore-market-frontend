@@ -37,7 +37,7 @@ export function AccountView({ locale }: { locale: string }) {
               onClick={() => setTab(item.id)}
               aria-current={tab === item.id ? "page" : undefined}
               className={`shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-left text-small ${
-                tab === item.id ? "bg-primary-soft font-medium text-primary" : "text-muted-foreground hover:bg-background-alt"
+                tab === item.id ? "bg-primary-soft font-medium text-primary-strong" : "text-muted-foreground hover:bg-background-alt"
               }`}
             >
               {item.label}
@@ -65,7 +65,7 @@ export function AccountView({ locale }: { locale: string }) {
                       <dd className="font-medium text-foreground">{config.name}</dd>
                     </div>
                   </dl>
-                  <button onClick={signOut} className="mt-4 text-small font-medium text-primary">
+                  <button onClick={signOut} className="mt-4 text-small font-medium text-primary-strong">
                     Sign out
                   </button>
                 </>

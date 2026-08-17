@@ -43,7 +43,7 @@ function Tab({ href, active, children }: { href: string; active: boolean; childr
       href={href}
       aria-current={active ? "page" : undefined}
       className={`shrink-0 whitespace-nowrap rounded-full border px-3 py-1.5 text-small ${
-        active ? "border-primary bg-primary-soft font-medium text-primary" : "border-border bg-card text-muted-foreground"
+        active ? "border-primary bg-primary-soft font-medium text-primary-strong" : "border-border bg-card text-muted-foreground"
       }`}
     >
       {children}

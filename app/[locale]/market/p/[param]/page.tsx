@@ -106,7 +106,7 @@ export default async function ProductPage({ params }: Props) {
           <div>
             <h1 className="text-h1 lg:text-display">{product.title}</h1>
             {product.rating ? (
-              <a href="#reviews" className="mt-1 flex items-center gap-2 text-small text-muted-foreground hover:text-primary">
+              <a href="#reviews" className="mt-1 flex items-center gap-2 text-small text-muted-foreground hover:text-primary-strong">
                 <RatingStars value={product.rating.average} />
                 {product.rating.average} · {product.rating.count.toLocaleString()} reviews
               </a>

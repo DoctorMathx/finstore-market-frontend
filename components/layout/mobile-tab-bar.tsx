@@ -21,7 +21,7 @@ export function MobileTabBar({ locale }: { locale: string }) {
   return (
     <nav
       aria-label="Main"
-      className="chrome-surface fixed bottom-0 left-0 right-0 z-40 flex h-14 border-t border-chrome-border pb-[env(safe-area-inset-bottom)] lg:hidden"
+      className="chrome-surface fixed bottom-0 left-0 right-0 z-40 flex h-[var(--tabbar-h)] border-t border-chrome-border pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       {tabs.map((tab) => {
         const href = localePath(locale, tab.href);
@@ -32,8 +32,11 @@ export function MobileTabBar({ locale }: { locale: string }) {
             key={tab.label}
             href={href}
             aria-current={active ? "page" : undefined}
-            className={`tap-target relative flex flex-1 flex-col items-center justify-center gap-0.5 text-micro ${
-              active ? "text-primary" : "text-chrome-muted"
+            // min-w-0 matters: a flex item defaults to min-width:auto, so
+            // "Categories" refused to shrink and pushed the bar 16px past a
+            // 320px viewport.
+            className={`relative flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 text-center text-micro ${
+              active ? "text-primary-strong" : "text-chrome-muted"
             }`}
           >
             <span className="relative">

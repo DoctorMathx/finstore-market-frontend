@@ -71,7 +71,7 @@ export function ReviewSection({
                 {/* Histogram bars are clickable filters. */}
                 <button
                   onClick={() => setFilter(active ? "all" : (String(stars) as Filter))}
-                  className="flex w-full items-center gap-2 text-small text-muted-foreground hover:text-primary"
+                  className="flex w-full items-center gap-2 text-small text-muted-foreground hover:text-primary-strong"
                 >
                   <span className="w-8 shrink-0 text-left">{stars} ★</span>
                   <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-background-alt">
@@ -94,7 +94,7 @@ export function ReviewSection({
             key={key}
             onClick={() => setFilter(key)}
             className={`rounded-full border px-3 py-1 text-small ${
-              filter === key ? "border-primary bg-primary-soft text-primary" : "border-border text-muted-foreground"
+              filter === key ? "border-primary bg-primary-soft text-primary-strong" : "border-border text-muted-foreground"
             }`}
           >
             {key === "all" ? "All" : key === "photos" ? "With photos" : `${key}★`}
@@ -143,7 +143,7 @@ export function ReviewSection({
                   ))}
                 </div>
               ) : null}
-              <button className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-small text-muted-foreground hover:text-primary">
+              <button className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-small text-muted-foreground hover:text-primary-strong">
                 <ThumbsUp size={13} /> Helpful ({review.helpful})
               </button>
             </li>

@@ -62,7 +62,7 @@ export function OrderDetailView({ locale, orderId }: { locale: string; orderId: 
   return (
     <PageContainer className="flex flex-col gap-5 py-4">
       <div>
-        <Link href={localePath(locale, "/market/orders")} className="text-small font-medium text-primary">
+        <Link href={localePath(locale, "/market/orders")} className="text-small font-medium text-primary-strong">
           ← All orders
         </Link>
         <h1 className="mt-1 text-display">Order {order.id}</h1>
@@ -87,7 +87,7 @@ export function OrderDetailView({ locale, orderId }: { locale: string; orderId: 
                 <div className="min-w-0 flex-1">
                   <Link
                     href={localePath(locale, `/market/store/${sub.merchant.slug}`)}
-                    className="text-body font-semibold text-foreground hover:text-primary"
+                    className="text-body font-semibold text-foreground hover:text-primary-strong"
                   >
                     {sub.merchant.name}
                   </Link>
@@ -119,7 +119,7 @@ export function OrderDetailView({ locale, orderId }: { locale: string; orderId: 
                         <div className="min-w-0 flex-1">
                           <Link
                             href={localePath(locale, item.href)}
-                            className="line-clamp-2 text-small text-foreground hover:text-primary"
+                            className="line-clamp-2 text-small text-foreground hover:text-primary-strong"
                           >
                             {item.title}
                           </Link>

@@ -46,7 +46,7 @@ export function DeliverToSelector({ variant = "header" }: { variant?: "header" |
         className={
           variant === "header"
             ? "tap-target flex items-center gap-1.5 rounded-md px-2 text-left hover:bg-chrome-hover"
-            : "inline-flex items-center gap-1 text-small font-medium text-primary hover:underline"
+            : "inline-flex items-center gap-1 text-small font-medium text-primary-strong hover:underline"
         }
       >
         <MapPin size={variant === "header" ? 18 : 14} className={`shrink-0 ${variant === "header" ? "text-chrome-muted" : "text-subtle-foreground"}`} />

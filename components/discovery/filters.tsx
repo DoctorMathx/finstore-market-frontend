@@ -218,7 +218,7 @@ function FilterGroup({ facet }: { facet: FacetGroup }) {
           {filtered.length > 8 ? (
             <button
               onClick={() => setExpanded((e) => !e)}
-              className="mt-1 text-small font-medium text-primary hover:underline"
+              className="mt-1 text-small font-medium text-primary-strong hover:underline"
             >
               {expanded ? "Show less" : `Show all ${filtered.length}`}
             </button>
@@ -254,7 +254,7 @@ function PriceFilter({ presets, currencySymbol }: { presets: PricePreset[]; curr
             <li key={preset.label}>
               <button
                 onClick={() => (active ? setPrice() : setPrice(preset.min, preset.max))}
-                className={`text-small ${active ? "font-semibold text-primary" : "text-muted-foreground hover:text-primary"}`}
+                className={`text-small ${active ? "font-semibold text-primary-strong" : "text-muted-foreground hover:text-primary-strong"}`}
               >
                 {preset.label.replace(/(\d[\d,]*)/g, (m) => `${currencySymbol}${Number(m).toLocaleString()}`)}
               </button>
@@ -328,13 +328,13 @@ export function FilterChipRow({ facets }: { facets: FacetGroup[] }) {
         <button
           key={chip.key}
           onClick={chip.onRemove}
-          className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary-soft px-3 py-1 text-small text-primary"
+          className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary-soft px-3 py-1 text-small text-primary-strong"
         >
           {chip.label}
           <X size={13} />
         </button>
       ))}
-      <button onClick={clearAll} className="text-small font-medium text-muted-foreground hover:text-primary hover:underline">
+      <button onClick={clearAll} className="text-small font-medium text-muted-foreground hover:text-primary-strong hover:underline">
         Clear all
       </button>
     </div>
@@ -442,7 +442,7 @@ export function Pagination({ page, pageCount }: { page: number; pageCount: numbe
             onClick={() => goToPage(p)}
             aria-current={p === page ? "page" : undefined}
             className={`tap-target min-w-11 rounded-md border px-3 text-small font-medium ${
-              p === page ? "border-primary bg-primary-soft text-primary" : "border-border text-foreground"
+              p === page ? "border-primary bg-primary-soft text-primary-strong" : "border-border text-foreground"
             }`}
           >
             {p}

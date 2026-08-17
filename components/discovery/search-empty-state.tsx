@@ -29,14 +29,14 @@ export function SearchEmptyState({
     <div className="flex flex-col gap-6">
       <div className="rounded-lg border border-border bg-card px-5 py-8">
         <h2 className="text-h2">
-          No results for <span className="text-primary">“{query}”</span>
+          No results for <span className="text-primary-strong">“{query}”</span>
         </h2>
         {suggestion ? (
           <p className="mt-2 text-body text-muted-foreground">
             Did you mean{" "}
             <Link
               href={localePath(locale, `/market/search?q=${encodeURIComponent(suggestion)}`)}
-              className="font-medium text-primary underline"
+              className="font-medium text-primary-strong underline"
             >
               {suggestion}
             </Link>
@@ -56,7 +56,7 @@ export function SearchEmptyState({
                 <Link
                   key={category.slug}
                   href={localePath(locale, `/market/c/${category.slug}`)}
-                  className="rounded-full border border-border bg-background-alt px-3 py-1.5 text-small text-foreground hover:border-primary hover:text-primary"
+                  className="rounded-full border border-border bg-background-alt px-3 py-1.5 text-small text-foreground hover:border-primary hover:text-primary-strong"
                 >
                   {category.label}
                 </Link>

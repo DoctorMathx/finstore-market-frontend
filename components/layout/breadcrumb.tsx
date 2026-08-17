@@ -16,7 +16,7 @@ export function Breadcrumb({ crumbs, locale }: { crumbs: Crumb[]; locale: string
       {parent ? (
         <Link
           href={localePath(locale, parent.href!)}
-          className="inline-flex items-center gap-1 text-small text-primary lg:hidden"
+          className="inline-flex items-center gap-1 text-small text-primary-strong lg:hidden"
         >
           <ChevronLeft size={14} />
           {parent.label}
@@ -25,7 +25,7 @@ export function Breadcrumb({ crumbs, locale }: { crumbs: Crumb[]; locale: string
 
       <ol className="hidden flex-wrap items-center gap-1 text-small text-muted-foreground lg:flex">
         <li>
-          <Link href={localePath(locale, "/market")} className="hover:text-primary">
+          <Link href={localePath(locale, "/market")} className="hover:text-primary-strong">
             Home
           </Link>
         </li>
@@ -33,7 +33,7 @@ export function Breadcrumb({ crumbs, locale }: { crumbs: Crumb[]; locale: string
           <li key={`${crumb.label}-${index}`} className="flex items-center gap-1">
             <ChevronRight size={12} className="text-subtle-foreground" />
             {crumb.href && index < crumbs.length - 1 ? (
-              <Link href={localePath(locale, crumb.href)} className="hover:text-primary">
+              <Link href={localePath(locale, crumb.href)} className="hover:text-primary-strong">
                 {crumb.label}
               </Link>
             ) : (

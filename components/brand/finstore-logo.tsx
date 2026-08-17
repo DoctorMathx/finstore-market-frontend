@@ -41,7 +41,7 @@ export function FinstoreWordmark({
     <span className={`flex items-center gap-2 ${className}`}>
       <FinstoreLogo size={size} priority={priority} />
       <span className="text-h2 leading-none tracking-tight text-chrome-foreground">
-        Finstore <span className="text-primary">Market</span>
+        Finstore <span className="text-primary-strong">Market</span>
       </span>
     </span>
   );

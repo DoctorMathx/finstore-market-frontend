@@ -231,7 +231,7 @@ export function BuyBox({
 
       {/* Sticky mobile buy bar — the CTA never leaves the viewport. */}
       {!ctaVisible && inStock ? (
-        <div className="fixed bottom-14 left-0 right-0 z-40 flex items-center gap-3 border-t border-border bg-card px-4 py-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] lg:hidden">
+        <div className="fixed bottom-[var(--tabbar-h)] left-0 right-0 z-40 flex items-center gap-3 border-t border-border bg-card px-4 py-2.5 lg:hidden">
           <div className="min-w-0 flex-1">
             <p className="truncate text-price-md text-foreground">{fmt(priceMinor * quantity)}</p>
             <p className="truncate text-micro text-subtle-foreground">Arrives {arrivesLabel}</p>
@@ -239,7 +239,7 @@ export function BuyBox({
           <button
             onClick={addToCart}
             disabled={needsSelection}
-            className="tap-target shrink-0 rounded-md bg-primary px-5 font-semibold text-foreground disabled:bg-border disabled:text-subtle-foreground"
+            className="tap-target shrink-0 rounded-md bg-primary px-5 font-semibold text-primary-foreground disabled:bg-border disabled:text-subtle-foreground"
           >
             Add to cart
           </button>

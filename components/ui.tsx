@@ -48,7 +48,10 @@ export function ProductImage({
         alt={alt}
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
-        className={`bg-product-canvas object-cover ${className}`}
+        // max-h/max-w keep a photo inside its frame even if a caller forgets to
+        // constrain the box — the failure mode is a letterboxed image, never a
+        // 900px-tall one that pushes the price off a phone screen.
+        className={`max-h-full max-w-full bg-product-canvas object-cover ${className}`}
       />
     );
   }
@@ -66,8 +69,9 @@ export function ProductImage({
   return (
     <svg
       viewBox="0 0 400 400"
-      role="img"
-      aria-label={alt}
+      // An empty alt means the caller already labels this image in text; a
+      // role="img" with a blank name is an unnamed landmark to a screen reader.
+      {...(alt ? { role: "img", "aria-label": alt } : { "aria-hidden": true })}
       className={className}
       // Hue is per-product; lightness and saturation come from the theme, so a
       // placeholder never punches a bright hole out of the dark page.
@@ -184,7 +188,7 @@ export function RatingStars({
     >
       <StarRow size={size} className="text-[var(--border-strong)]" />
       <span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${percent}%` }}>
-        <StarRow size={size} className="text-primary" />
+        <StarRow size={size} className="text-primary-strong" />
       </span>
     </span>
   );
@@ -256,7 +260,7 @@ export function Badge({
     success: "border-success/30 bg-success-soft text-success",
     warning: "border-warning/30 bg-warning-soft text-warning",
     danger: "border-destructive/30 bg-destructive-soft text-destructive",
-    brand: "border-primary/30 bg-primary-soft text-primary",
+    brand: "border-primary/30 bg-primary-soft text-primary-strong",
     solid: "border-transparent bg-primary text-primary-foreground",
   };
   return (
@@ -298,7 +302,7 @@ export function SectionHeading({
         {subtitle ? <p className="text-small text-muted-foreground">{subtitle}</p> : null}
       </div>
       {href ? (
-        <Link href={href} className="shrink-0 text-small font-medium text-primary hover:underline">
+        <Link href={href} className="shrink-0 text-small font-medium text-primary-strong hover:underline">
           {linkLabel}
         </Link>
       ) : null}
@@ -342,7 +346,7 @@ export function InlineAlert({
     warning: "border-warning/30 bg-warning-soft text-warning",
     danger: "border-destructive/30 bg-destructive-soft text-destructive",
     success: "border-success/30 bg-success-soft text-success",
-    info: "border-primary/30 bg-primary-soft text-primary",
+    info: "border-primary/30 bg-primary-soft text-primary-strong",
   };
   return (
     <Alert className={cn("rounded-md px-3 py-2", tones[tone])} role="status">
@@ -360,7 +364,7 @@ export function Skeleton({ className = "" }: { className?: string }) {
 export function BuyerProtectionNote({ merchantName }: { merchantName?: string }) {
   return (
     <div className="rounded-md border border-primary/30 bg-primary-soft px-3 py-2.5">
-      <p className="text-small font-semibold text-primary">Buyer protection</p>
+      <p className="text-small font-semibold text-primary-strong">Buyer protection</p>
       <p className="mt-0.5 text-small text-muted-foreground">
         {merchantName ? `${merchantName} is` : "The store is"} paid only after you confirm the order arrived.
       </p>

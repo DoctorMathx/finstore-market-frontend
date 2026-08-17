@@ -49,7 +49,7 @@ export function OrderTimeline({ status }: { status: StoredSubOrder["status"] }) 
                   done
                     ? "border-primary bg-primary text-primary-foreground"
                     : current
-                      ? "pulse-ring border-primary bg-card text-primary"
+                      ? "pulse-ring border-primary bg-card text-primary-strong"
                       : "border-border bg-card text-subtle-foreground"
                 }`}
               >
@@ -75,7 +75,7 @@ export function OrderTimeline({ status }: { status: StoredSubOrder["status"] }) 
 export function RiderContact({ name, phone }: { name: string; phone: string }) {
   return (
     <div className="flex items-center gap-3 rounded-md border border-border bg-background-alt p-3">
-      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-primary">
+      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-primary-strong">
         <Truck size={18} />
       </span>
       <div className="min-w-0 flex-1">

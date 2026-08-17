@@ -104,7 +104,7 @@ export function ConfirmationView({ locale, orderId }: { locale: string; orderId:
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {NEXT_STEPS.map((step, index) => (
             <li key={step.title}>
-              <span className="mb-1 flex h-7 w-7 items-center justify-center rounded-full bg-primary-soft text-small font-semibold text-primary">
+              <span className="mb-1 flex h-7 w-7 items-center justify-center rounded-full bg-primary-soft text-small font-semibold text-primary-strong">
                 {index + 1}
               </span>
               <p className="text-body font-medium text-foreground">{step.title}</p>

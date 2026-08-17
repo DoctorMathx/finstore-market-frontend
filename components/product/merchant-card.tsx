@@ -28,7 +28,7 @@ export function MerchantCard({
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1 text-body font-semibold text-foreground">
             <span className="truncate">{merchant.name}</span>
-            {merchant.verified ? <BadgeCheck size={16} className="shrink-0 text-primary" aria-label="Verified merchant" /> : null}
+            {merchant.verified ? <BadgeCheck size={16} className="shrink-0 text-primary-strong" aria-label="Verified merchant" /> : null}
           </p>
 
           {merchant.rating !== undefined ? (
@@ -47,7 +47,7 @@ export function MerchantCard({
 
           <Link
             href={localePath(locale, `/market/store/${merchant.slug}`)}
-            className="mt-2 inline-flex items-center rounded-md border border-border px-3 py-1.5 text-small font-medium text-foreground hover:border-primary hover:text-primary"
+            className="mt-2 inline-flex items-center rounded-md border border-border px-3 py-1.5 text-small font-medium text-foreground hover:border-primary hover:text-primary-strong"
           >
             Visit store
           </Link>

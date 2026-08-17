@@ -341,71 +341,212 @@ const DAY = 86_400_000;
  * worse than a placeholder, so only matching pools are wired; everything else
  * keeps the generated art until merchant uploads arrive.
  */
+/**
+ * Every leaf category resolves to a pool of real photographs. There is no
+ * fallback tier any more: a category that renders generated placeholder art
+ * reads as an empty shelf, so the mapping below covers all 108 visible
+ * subcategories (and the hidden ones, for when they are switched on).
+ *
+ * Where no pool is specific enough, the nearest honest neighbour is used —
+ * a wardrobe photo for storage furniture is right; a random gradient is not.
+ */
 const PHOTO_POOL_BY_SUBCATEGORY: Record<string, string> = {
   // fashion & apparel
-  "dresses-gowns": "fashion",
   "womens-tops": "fashion",
-  "two-piece-sets": "fashion",
-  "outerwear-blazers": "fashion",
+  "dresses-gowns": "fashion",
   "womens-bottoms": "active",
+  "two-piece-sets": "fashion",
+  "mens-clothing": "menswear",
   "unisex-clothing": "active",
+  "outerwear-blazers": "menswear",
+  "traditional-native-wear": "native",
+  "underwear-sleepwear": "lingerie",
+  "thrift-preloved": "menswear",
+  "eyewear-sunglasses": "eyewear",
+  "fashion-accessories": "jewelry",
+
   // footwear
-  sneakers: "sneakers",
+  "womens-shoes": "heels",
   "mens-shoes": "sneakers",
-  // hair
+  sneakers: "sneakers",
+  "slippers-sandals": "slippers",
+  "kids-shoes": "kidshoes",
+  "unisex-footwear": "unisexshoes",
+
+  // bags & luggage
+  "handbags-totes": "bags",
+  "backpacks-school-bags": "backpacks",
+  "travel-luggage": "bags",
+  "wallets-purses": "wallets",
+  "mens-bags": "mensbags",
+
+  // fabric & textiles
+  "mens-fabric": "fabric",
+  "lace-ankara-aso-ebi": "fabric",
+  "net-chiffon-lining": "fabric",
+  "sewing-supplies": "fabric",
+
+  // hair & wigs
   "human-hair-wigs": "hair",
   "braided-synthetic-wigs": "hair",
   "hair-bundles-closures": "hair",
-  // bags
-  "handbags-totes": "bags",
-  "travel-luggage": "bags",
-  // beauty
-  "perfume-cologne": "beauty",
-  "body-mist-spray": "beauty",
-  makeup: "beauty",
-  "skincare-face": "beauty",
+  "hair-care-treatments": "hair",
+  "hair-tools-styling": "hair",
+  "hair-accessories": "hair",
+
+  // beauty & personal care
+  "perfume-cologne": "perfume",
+  "arabic-oud-fragrance": "perfume",
+  "body-mist-spray": "perfume",
+  "perfume-oils-rollons": "perfume",
+  "skincare-face": "skincare",
   "body-care-lotions": "beauty",
-  // electronics
-  phones: "phones",
-  "laptops-computing": "laptops",
-  "audio-speakers": "audio",
+  makeup: "beauty",
+  "lip-care": "lips",
+  "nail-care": "nails",
+  "oral-personal-hygiene": "oral",
+  "mens-grooming": "grooming",
+  "cosmetic-packaging-materials": "skincare",
+  "beauty-tools": "nails",
+
   // jewelry & watches
-  watches: "watches",
   "necklaces-pendants": "jewelry",
   earrings: "jewelry",
-  rings: "jewelry",
   "bracelets-anklets": "jewelry",
+  rings: "jewelry",
+  watches: "watches",
   "jewelry-sets": "jewelry",
-  // home & furniture
+  "jewelry-storage": "storage",
+
+  // home & kitchen
+  "cookware-pots": "kitchen",
+  "kitchen-utensils": "kitchen",
+  "small-kitchen-appliances": "appliances",
+  "cookers-ovens-hobs": "appliances",
+  "food-storage-flasks": "foodstorage",
+  "home-appliances": "appliances",
+  "cleaning-laundry": "cleaning",
+  "pest-control": "cleaning",
+  "air-care-home-fragrance": "perfume",
+  "bathroom-accessories": "bathroom",
+  "bedding-towels-linen": "bedding",
   "home-decor": "homeware",
+  "storage-organisation": "storage",
+
+  // furniture
+  "beds-mattresses": "beds",
+  "wardrobes-storage-furniture": "wardrobe",
   "sofas-living-room": "furniture",
   "tables-chairs": "furniture",
-  // food
-  "fresh-produce": "grocery",
-  "bakery-prepared-food": "grocery",
-  // kids
+  "office-furniture": "office",
+
+  // power & energy
+  "rechargeable-fans": "appliances",
+  "power-banks-chargers": "phoneacc",
+  "solar-panels-kits": "solar",
+  "inverters-batteries": "power",
+  generators: "power",
+  "rechargeable-lights": "lighting",
+  "gas-cylinders-burners": "gascylinder",
+
+  // phones & electronics
+  phones: "phones",
+  "phone-accessories": "phoneacc",
+  "laptops-computing": "laptops",
+  "audio-speakers": "audio",
+  "tv-entertainment": "tv",
+  "cameras-content-creation": "camera",
+  "smartwatches-wearables": "smartwatch",
+
+  // health & wellness
+  "supplements-vitamins": "supplements",
+  "sexual-wellness": "medical",
+  "medical-supplies": "medical",
+  "fitness-weight-management": "fitness",
+  "herbal-remedies": "herbal",
+  "smoking-vaping": "herbal",
+
+  // food & groceries
+  "provisions-packaged-foods": "provisions",
+  "snacks-confectionery": "snacks",
+  beverages: "beverages",
+  "fresh-produce": "produce",
+  "meat-fish-poultry": "meat",
+  "bakery-prepared-food": "snacks",
+  "spices-oils-condiments": "spices",
+
+  // agriculture & farming
+  "seedlings-seeds": "agric",
+  "livestock-poultry": "agric",
+  "animal-feed": "agric",
+  "fertiliser-agrochemicals": "agric",
+  "farm-tools-equipment": "agric",
+
+  // baby & kids
+  "baby-food-formula": "baby",
+  "kids-clothing": "kidswear",
   "toys-ride-ons": "kids",
-  // power
-  "solar-panels-kits": "power",
+  "baby-care-hygiene": "baby",
+  "kids-school-supplies": "school",
+
   // automotive
+  "engine-transmission-parts": "autoparts",
+  vehicles: "vehicles",
+  "truck-heavy-duty-parts": "autoparts",
   "car-accessories-care": "auto",
-  "engine-transmission-parts": "auto",
+  "tyres-batteries-fluids": "tyres",
+
   // services & digital
   "web-software-services": "services",
   "design-printing": "services",
-  "photography-videography": "services",
+  "photography-videography": "camera",
   "ebooks-downloads": "services",
   "courses-training": "services",
   "events-bookings": "services",
+
+  // hidden departments — mapped so switching one on never ships placeholders
+  "doors-windows": "wardrobe",
+  "tiles-flooring": "bathroom",
+  "plumbing-fittings": "autoparts",
+  "paint-finishes": "cleaning",
+  "tools-hardware": "autoparts",
+  sportswear: "active",
+  "team-jerseys": "active",
+  "gym-equipment": "fitness",
+  "sports-accessories": "active",
+  books: "school",
+  "office-supplies": "school",
+  "school-stationery": "school",
+  "resin-mould-supplies": "fabric",
+  "crochet-yarn": "fabric",
+  "handmade-decor": "homeware",
+  "gifts-souvenirs": "homeware",
 };
 
 /** Three views per product, walked deterministically through the pool. */
+/** Largest stride below the pool size that still visits every entry. */
+function coprimeStride(n: number): number {
+  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+  for (let s = Math.max(1, Math.floor(n * 0.618)); s >= 1; s--) {
+    if (gcd(s, n) === 1) return s;
+  }
+  return 1;
+}
+
 function photosFor(leafSlug: string, index: number, title: string) {
   const poolName = PHOTO_POOL_BY_SUBCATEGORY[leafSlug];
   const pool = poolName ? PHOTO_POOLS[poolName] : undefined;
   if (!pool?.length) return undefined;
-  return Array.from({ length: 3 }, (_, i) => ({
-    seed: pool[(index * 3 + i) % pool.length],
+  // A gallery never repeats a photo: a small pool yields a two-image gallery
+  // rather than the same shot three times with "view 2" under it.
+  const count = Math.min(3, pool.length);
+  // Stride by a number coprime to the pool size, so consecutive products walk
+  // the whole pool before any lead photo comes round again. Striding by the
+  // gallery length instead (the obvious choice) shares a factor with most pool
+  // sizes and collapsed a nine-photo pool to three distinct cards in a grid.
+  const start = (index * coprimeStride(pool.length)) % pool.length;
+  return Array.from({ length: count }, (_, i) => ({
+    seed: pool[(start + i) % pool.length],
     alt: `${title}${i === 0 ? "" : ` — view ${i + 1}`}`,
     kind: "image" as const,
   }));

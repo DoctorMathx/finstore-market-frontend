@@ -93,7 +93,7 @@ export function CartView({ locale }: { locale: string }) {
                 <div className="min-w-0 flex-1">
                   <Link
                     href={localePath(locale, `/market/store/${group.merchant.slug}`)}
-                    className="text-body font-semibold text-foreground hover:text-primary"
+                    className="text-body font-semibold text-foreground hover:text-primary-strong"
                   >
                     {group.merchant.name}
                   </Link>
@@ -126,7 +126,7 @@ export function CartView({ locale }: { locale: string }) {
                       <div className="min-w-0 flex-1">
                         <Link
                           href={localePath(locale, line.href)}
-                          className="line-clamp-2 text-body text-foreground hover:text-primary"
+                          className="line-clamp-2 text-body text-foreground hover:text-primary-strong"
                         >
                           {line.title}
                         </Link>
@@ -174,7 +174,7 @@ export function CartView({ locale }: { locale: string }) {
                               remove(line.productId, line.variantId);
                               push({ message: "Moved to saved items" });
                             }}
-                            className="text-small font-medium text-muted-foreground hover:text-primary"
+                            className="text-small font-medium text-muted-foreground hover:text-primary-strong"
                           >
                             Save for later
                           </button>
@@ -256,7 +256,7 @@ export function CartView({ locale }: { locale: string }) {
             </Link>
 
             <p className="mt-3 rounded-md border border-primary/30 bg-primary-soft px-3 py-2 text-small text-muted-foreground">
-              <span className="font-semibold text-primary">Buyer protection.</span> Stores are paid after you confirm
+              <span className="font-semibold text-primary-strong">Buyer protection.</span> Stores are paid after you confirm
               delivery.
             </p>
           </div>

@@ -160,17 +160,17 @@ export default async function MarketHomePage({ params }: { params: Promise<{ loc
 
       <section className="grid gap-3 rounded-lg border border-border bg-card p-5 sm:grid-cols-3">
         <TrustColumn
-          icon={<ShieldCheck size={22} className="text-primary" />}
+          icon={<ShieldCheck size={22} className="text-primary-strong" />}
           title="Pay safely"
           body="Your money is held until you confirm the item arrived. The store is paid after that."
         />
         <TrustColumn
-          icon={<Store size={22} className="text-primary" />}
+          icon={<Store size={22} className="text-primary-strong" />}
           title="Real merchants"
           body="Every store on Market is verified before it can list. You always see who you are buying from."
         />
         <TrustColumn
-          icon={<Truck size={22} className="text-primary" />}
+          icon={<Truck size={22} className="text-primary-strong" />}
           title="Delivery nationwide"
           body="Track every order from pickup to your door, with a delivery date before you pay."
         />

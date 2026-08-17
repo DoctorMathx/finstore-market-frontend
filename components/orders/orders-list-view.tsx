@@ -93,7 +93,7 @@ export function OrdersListView({ locale }: { locale: string }) {
 
                   <Link
                     href={localePath(locale, `/market/orders/${order.id}?sub=${sub.id}`)}
-                    className="tap-target mt-3 inline-flex items-center rounded-md border border-border px-3 text-small font-medium text-foreground hover:border-primary hover:text-primary"
+                    className="tap-target mt-3 inline-flex items-center rounded-md border border-border px-3 text-small font-medium text-foreground hover:border-primary hover:text-primary-strong"
                   >
                     View details and track
                   </Link>

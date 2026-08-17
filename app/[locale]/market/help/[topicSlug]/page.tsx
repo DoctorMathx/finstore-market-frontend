@@ -41,7 +41,7 @@ export default async function HelpTopicPage({ params }: Props) {
         </div>
         <Link
           href={localePath(locale, "/market/help")}
-          className="mt-6 inline-block text-small font-medium text-primary"
+          className="mt-6 inline-block text-small font-medium text-primary-strong"
         >
           ← All help topics
         </Link>

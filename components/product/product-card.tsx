@@ -59,7 +59,7 @@ export function ProductCard({
           onClick={() => toggle(card.id)}
           aria-label={saved ? `Remove ${card.title} from saved items` : `Save ${card.title}`}
           aria-pressed={saved}
-          className="tap-target absolute right-1 top-1 flex items-center justify-center rounded-full bg-card/90 text-muted-foreground opacity-100 transition-opacity hover:text-primary lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+          className="tap-target absolute right-1 top-1 flex items-center justify-center rounded-full bg-card/90 text-muted-foreground opacity-100 transition-opacity hover:text-primary-strong lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
         >
           <Heart size={18} fill={saved ? "currentColor" : "none"}  />
         </button>
@@ -68,7 +68,7 @@ export function ProductCard({
       <div className={`flex flex-1 flex-col gap-1.5 ${rail ? "px-3 pb-3 pt-2 lg:px-4 lg:pb-4 lg:pt-3" : "px-4 pb-4 pt-3"}`}>
         <Link
           href={localePath(locale, card.href)}
-          className="line-clamp-2 min-h-10 text-small leading-5 text-foreground hover:text-primary"
+          className="line-clamp-2 min-h-10 text-small leading-5 text-foreground hover:text-primary-strong"
         >
           {card.title}
         </Link>

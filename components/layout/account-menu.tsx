@@ -87,7 +87,7 @@ export function AccountMenu({ locale }: { locale: string }) {
                   signOut();
                   setOpen(false);
                 }}
-                className="w-full border-t border-chrome-border pt-3 text-left text-small font-medium text-primary"
+                className="w-full border-t border-chrome-border pt-3 text-left text-small font-medium text-primary-strong"
               >
                 Sign out
               </button>
@@ -102,7 +102,7 @@ export function AccountMenu({ locale }: { locale: string }) {
               </Link>
               <p className="mt-2 text-center text-small text-chrome-muted">
                 New here?{" "}
-                <Link href={localePath(locale, "/market/signin?mode=create")} className="font-medium text-primary">
+                <Link href={localePath(locale, "/market/signin?mode=create")} className="font-medium text-primary-strong">
                   Create an account
                 </Link>
               </p>
@@ -121,7 +121,7 @@ export function AccountMenu({ locale }: { locale: string }) {
 
 function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} role="menuitem" className="block py-1.5 text-small text-muted-foreground hover:text-primary">
+    <Link href={href} role="menuitem" className="block py-1.5 text-small text-muted-foreground hover:text-primary-strong">
       {children}
     </Link>
   );

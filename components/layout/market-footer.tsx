@@ -47,7 +47,7 @@ const COLUMNS = [
 export function MarketFooter({ locale }: { locale: string }) {
   const config = getCountry(locale.split("-")[1] ?? "NG");
   return (
-    <footer className="chrome-surface mt-12 border-t border-chrome-border">
+    <footer className="chrome-surface mt-12 border-t border-chrome-border pb-[var(--tabbar-h)] lg:pb-0">
       <div className="mx-auto w-full max-w-[1440px] px-4 py-10 lg:px-6">
         <div className="mb-8">
           <FinstoreWordmark size={28} />
@@ -63,7 +63,7 @@ export function MarketFooter({ locale }: { locale: string }) {
               <ul className="space-y-2">
                 {column.links.map(([label, href]) => (
                   <li key={label}>
-                    <Link href={localePath(locale, href)} className="text-small text-chrome-muted hover:text-primary">
+                    <Link href={localePath(locale, href)} className="text-small text-chrome-muted hover:text-primary-strong">
                       {label}
                     </Link>
                   </li>
@@ -91,10 +91,10 @@ export function MarketFooter({ locale }: { locale: string }) {
             Central Bank of Nigeria.
           </p>
           <p className="flex gap-4">
-            <Link href={localePath(locale, "/market/help/terms")} className="hover:text-primary">
+            <Link href={localePath(locale, "/market/help/terms")} className="hover:text-primary-strong">
               Terms
             </Link>
-            <Link href={localePath(locale, "/market/help/privacy")} className="hover:text-primary">
+            <Link href={localePath(locale, "/market/help/privacy")} className="hover:text-primary-strong">
               Privacy
             </Link>
             <span>© {new Date().getFullYear()} Finstore</span>

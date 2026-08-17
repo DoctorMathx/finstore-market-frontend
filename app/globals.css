@@ -58,6 +58,12 @@
 :root {
   --radius: 0.625rem;
 
+  /* Height of the fixed mobile tab bar, safe area included. Anything that
+     pins itself to the bottom of a phone screen — the sticky buy bar, the
+     footer's last row — offsets by this instead of guessing 56px. Zeroed at
+     lg, where the bar is not rendered at all. */
+  --tabbar-h: calc(3.5rem + env(safe-area-inset-bottom));
+
   --background: #ffffff;
   --background-alt: #fafafa;
   --foreground: #0a0a0a;
@@ -69,10 +75,15 @@
   --popover: #ffffff;
   --popover-foreground: #0a0a0a;
 
-  /* Finstore orange. Doubles as the buy action — brand and CTA are one here. */
+  /* Finstore orange. Doubles as the buy action — brand and CTA are one here.
+     Two orange tokens, because one cannot do both jobs at AA: --primary is the
+     fill (white on it is only 3.6:1, so its foreground is near-black at 5.2:1),
+     and --primary-strong is the ink for orange TEXT, dark enough to clear
+     4.5:1 on white and on every hero card tint. */
   --primary: #ea580c;
   --primary-hover: #c2410c;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #1c1207;
+  --primary-strong: #b8420a;
   --primary-soft: rgb(234 88 12 / 0.08);
 
   --secondary: #f4f4f5;
@@ -123,6 +134,12 @@
   --chart-5: #71717a;
 }
 
+@media (min-width: 1024px) {
+  :root {
+    --tabbar-h: 0px;
+  }
+}
+
 /* ---------------------------------------------------------------------- dark */
 
 .dark {
@@ -140,6 +157,9 @@
   --primary: #f97316;
   --primary-hover: #fb923c;
   --primary-foreground: #0a0a0a;
+  /* On black, the vivid orange already clears AA as text, so the ink token
+     only needs to lift slightly for the tinted panels. */
+  --primary-strong: #fdba74;
   --primary-soft: rgb(249 115 22 / 0.12);
 
   --secondary: #18181b;
@@ -200,6 +220,7 @@
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-strong: var(--primary-strong);
   --color-primary-soft: var(--primary-soft);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);

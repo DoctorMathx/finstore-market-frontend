@@ -142,7 +142,7 @@ export function CheckoutView({ locale }: { locale: string }) {
   if (submitting) {
     return (
       <PageContainer className="flex min-h-[60vh] flex-col items-center justify-center gap-3 py-10 text-center">
-        <Loader2 size={32} className="animate-spin text-primary" />
+        <Loader2 size={32} className="animate-spin text-primary-strong" />
         <h1 className="text-h1">Taking you to pay {fmt(total)}</h1>
         <p className="text-body text-muted-foreground">Do not close this page or press back.</p>
       </PageContainer>
@@ -263,7 +263,7 @@ export function CheckoutView({ locale }: { locale: string }) {
               <section className="rounded-lg border border-border bg-card p-4">
                 <div className="mb-3 flex items-center justify-between">
                   <h2 className="text-h2">Delivering to</h2>
-                  <button onClick={() => goToStep("delivery")} className="text-small font-medium text-primary">
+                  <button onClick={() => goToStep("delivery")} className="text-small font-medium text-primary-strong">
                     Change
                   </button>
                 </div>
@@ -389,7 +389,7 @@ export function CheckoutView({ locale }: { locale: string }) {
             {step === "payment" ? (
               <>
                 <p className="mt-4 rounded-md border border-primary/30 bg-primary-soft px-3 py-2 text-small text-muted-foreground">
-                  <span className="font-semibold text-primary">Your money is protected.</span> Each store is paid only
+                  <span className="font-semibold text-primary-strong">Your money is protected.</span> Each store is paid only
                   after you confirm their part of the order arrived.
                 </p>
                 <button
@@ -563,7 +563,7 @@ function PromoCodeField({
       <button
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between text-small font-medium text-primary"
+        className="flex w-full items-center justify-between text-small font-medium text-primary-strong"
       >
         Have a promo code?
         <ChevronDown size={14} className={open ? "rotate-180" : ""} />

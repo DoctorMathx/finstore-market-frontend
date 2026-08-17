@@ -236,7 +236,7 @@ export function SearchBar({ locale, autoFocus = false }: { locale: string; autoF
                 >
                   <Search size={14} className="shrink-0 text-chrome-muted" />
                   <span className="text-chrome-muted">
-                    in <span className="font-medium text-primary">{row.label}</span>
+                    in <span className="font-medium text-primary-strong">{row.label}</span>
                   </span>
                 </button>
               );

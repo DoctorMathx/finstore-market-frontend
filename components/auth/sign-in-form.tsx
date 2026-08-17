@@ -123,7 +123,7 @@ export function SignInForm({ locale }: { locale: string }) {
       {mode === "reset" ? (
         <button
           onClick={() => switchMode("signin")}
-          className="mb-3 inline-flex items-center gap-1 text-small font-medium text-primary"
+          className="mb-3 inline-flex items-center gap-1 text-small font-medium text-primary-strong"
         >
           <ArrowLeft size={14} /> Back to sign in
         </button>
@@ -174,7 +174,7 @@ export function SignInForm({ locale }: { locale: string }) {
                 <button
                   type="button"
                   onClick={() => switchMode("reset")}
-                  className="text-small font-medium text-primary hover:underline"
+                  className="text-small font-medium text-primary-strong hover:underline"
                 >
                   Forgot password?
                 </button>
@@ -238,14 +238,14 @@ export function SignInForm({ locale }: { locale: string }) {
           {mode === "create" ? (
             <>
               Already have an account?{" "}
-              <button onClick={() => switchMode("signin")} className="font-medium text-primary hover:underline">
+              <button onClick={() => switchMode("signin")} className="font-medium text-primary-strong hover:underline">
                 Sign in
               </button>
             </>
           ) : (
             <>
               New here?{" "}
-              <button onClick={() => switchMode("create")} className="font-medium text-primary hover:underline">
+              <button onClick={() => switchMode("create")} className="font-medium text-primary-strong hover:underline">
                 Create an account
               </button>
             </>
@@ -259,7 +259,7 @@ export function SignInForm({ locale }: { locale: string }) {
         </p>
         <Link
           href={localePath(locale, "/market")}
-          className="mt-1 inline-block text-small font-medium text-primary hover:underline"
+          className="mt-1 inline-block text-small font-medium text-primary-strong hover:underline"
         >
           Keep shopping
         </Link>

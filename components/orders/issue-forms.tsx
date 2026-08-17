@@ -118,7 +118,7 @@ export function IssueForm({
   return (
     <PageContainer className="py-6">
       <div className="mx-auto max-w-2xl">
-        <Link href={localePath(locale, `/market/orders/${orderId}`)} className="text-small font-medium text-primary">
+        <Link href={localePath(locale, `/market/orders/${orderId}`)} className="text-small font-medium text-primary-strong">
           ← Back to order {orderId}
         </Link>
         <h1 className="mt-1 text-display">{mode === "dispute" ? "Report an issue" : "Request a return"}</h1>

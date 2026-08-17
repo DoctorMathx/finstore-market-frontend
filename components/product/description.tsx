@@ -19,7 +19,7 @@ export function RichTextDescription({ html }: { html: string }) {
       />
       <button
         onClick={() => setExpanded((e) => !e)}
-        className="mt-2 text-small font-medium text-primary hover:underline lg:hidden"
+        className="mt-2 text-small font-medium text-primary-strong hover:underline lg:hidden"
       >
         {expanded ? "Read less" : "Read more"}
       </button>

@@ -100,7 +100,7 @@ export function HeroCardRail({ cards, locale }: { cards: HeroCard[]; locale: str
 
             <Link
               href={localePath(locale, card.href)}
-              className="mt-auto inline-flex items-center gap-1 pt-4 text-small font-semibold text-primary hover:underline"
+              className="mt-auto inline-flex items-center gap-1 pt-4 text-small font-semibold text-primary-strong hover:underline"
             >
               {card.ctaLabel}
               <ChevronRight size={15} />
