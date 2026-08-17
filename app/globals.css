@@ -109,13 +109,19 @@
   --input: #d4d4d8;
   --ring: #ea580c;
 
-  /* Chrome — header, category bar, footer, tab bar. */
-  --chrome: #ffffff;
-  --chrome-raised: #fafafa;
-  --chrome-foreground: #0a0a0a;
-  --chrome-muted: #52525b;
-  --chrome-border: #e4e4e7;
-  --chrome-hover: rgb(0 0 0 / 0.04);
+  /* Chrome — header, category bar, footer, tab bar. Deliberately a faded
+     black rather than white: against a white catalog a white header has to be
+     drawn with a border to exist at all, and the eye reads the whole page as
+     one undifferentiated sheet. Charcoal makes the frame a frame. */
+  --chrome: #18181b;
+  --chrome-raised: #232327;
+  --chrome-foreground: #ffffff;
+  --chrome-muted: #a1a1aa;
+  --chrome-border: rgb(255 255 255 / 0.12);
+  --chrome-hover: rgb(255 255 255 / 0.07);
+  /* Orange needs a different ink on charcoal than on white — the page's
+     --primary-strong is a deep burnt orange that all but disappears here. */
+  --chrome-accent: #fb923c;
 
   /* Backdrop the 1:1 product frame sits on. Merchant photos letterbox onto it. */
   --product-canvas: #ffffff;
@@ -191,6 +197,7 @@
   --chrome-muted: #a1a1aa;
   --chrome-border: rgb(255 255 255 / 0.1);
   --chrome-hover: rgb(255 255 255 / 0.06);
+  --chrome-accent: #fb923c;
 
   --product-canvas: #0f0f11;
   --ph-l-1: 20%;
@@ -247,6 +254,7 @@
   --color-chrome-muted: var(--chrome-muted);
   --color-chrome-border: var(--chrome-border);
   --color-chrome-hover: var(--chrome-hover);
+  --color-chrome-accent: var(--chrome-accent);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -357,6 +365,11 @@
 @utility chrome-surface {
   background-color: var(--chrome);
   color: var(--chrome-foreground);
+  /* Rebind the orange ink for everything inside. Every `text-primary-strong`
+     in the header, footer and tab bar picks this up through the cascade, so
+     components shared between the chrome and the page (the Deliver-to
+     selector, for one) need no variant prop to stay legible in both. */
+  --primary-strong: var(--chrome-accent);
 }
 
 @utility tap-target {

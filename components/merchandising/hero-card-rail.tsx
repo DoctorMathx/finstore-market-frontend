@@ -32,14 +32,17 @@ export type HeroCard = {
 
 /**
  * Decorative panel tints, not foundational surfaces — each pair is tuned for
- * both themes so the headline stays at body-text contrast on top of it.
+ * both themes so the headline stays at body-text contrast on top of it. These
+ * sit a step deeper than a typical wash: at the 100 level the cards read as
+ * five faintly-off-white rectangles, and the rail loses the block-of-colour
+ * effect it exists for. At 200 the headline still clears 13:1.
  */
 const TINTS: Record<HeroCard["tint"], string> = {
-  orange: "bg-orange-100 dark:bg-orange-950/45",
-  sky: "bg-sky-100 dark:bg-sky-950/45",
-  rose: "bg-rose-100 dark:bg-rose-950/45",
-  emerald: "bg-emerald-100 dark:bg-emerald-950/45",
-  slate: "bg-slate-200 dark:bg-slate-900/60",
+  orange: "bg-orange-200 dark:bg-orange-900/45",
+  sky: "bg-sky-200 dark:bg-sky-900/45",
+  rose: "bg-rose-200 dark:bg-rose-900/45",
+  emerald: "bg-emerald-200 dark:bg-emerald-900/45",
+  slate: "bg-slate-300 dark:bg-slate-800/70",
 };
 
 export function HeroCardRail({ cards, locale }: { cards: HeroCard[]; locale: string }) {
@@ -100,7 +103,7 @@ export function HeroCardRail({ cards, locale }: { cards: HeroCard[]; locale: str
 
             <Link
               href={localePath(locale, card.href)}
-              className="mt-auto inline-flex items-center gap-1 pt-4 text-small font-semibold text-primary-strong hover:underline"
+              className="mt-auto inline-flex items-center gap-1 pt-4 text-small font-bold text-foreground underline-offset-4 hover:underline"
             >
               {card.ctaLabel}
               <ChevronRight size={15} />
